@@ -3,6 +3,7 @@ import time
 import blindspot
 import RPi.GPIO as GPIO
 
+DETECT = 50
 GPIO.setmode(GPIO.BCM)
 RIGHT_LED = 20
 LEFT_LED = 26
@@ -21,12 +22,12 @@ try:
         val2 = right_front.get_value()
         print("| {:>6} | {:>6}".format(val1, val2))
 
-        if left_front.get_value() < 100:
+        if left_front.get_value() < DETECT:
             GPIO.output(LEFT_LED, GPIO.HIGH)
         else:
             GPIO.output(LEFT_LED, GPIO.LOW)
 
-        if right_front.get_value() < 100:
+        if right_front.get_value() < DETECT:
             GPIO.output(RIGHT_LED, GPIO.HIGH)
         else:
             GPIO.output(RIGHT_LED, GPIO.LOW)
