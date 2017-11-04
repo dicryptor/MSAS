@@ -3,7 +3,7 @@ import time
 import blindspot
 import RPi.GPIO as GPIO
 
-DETECT = 50
+DETECT = 60
 GPIO.setmode(GPIO.BCM)
 RIGHT_LED = 20
 LEFT_LED = 26
