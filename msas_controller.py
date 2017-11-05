@@ -7,8 +7,7 @@ DETECT = 100
 GPIO.setmode(GPIO.BCM)
 RIGHT_LED = 20
 LEFT_LED = 26
-GPIO.setup(RIGHT_LED, GPIO.OUT)
-GPIO.setup(LEFT_LED, GPIO.OUT)
+GPIO.setup([RIGHT_LED,LEFT_LED], GPIO.OUT)
 
 left_front = blindspot.USensor(0)
 right_front = blindspot.USensor(1)
