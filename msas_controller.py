@@ -3,7 +3,7 @@ import time
 import blindspot
 import RPi.GPIO as GPIO
 
-DETECT = 60
+DETECT = 100
 GPIO.setmode(GPIO.BCM)
 RIGHT_LED = 20
 LEFT_LED = 26
@@ -31,7 +31,7 @@ try:
             GPIO.output(RIGHT_LED, GPIO.HIGH)
         else:
             GPIO.output(RIGHT_LED, GPIO.LOW)
-        time.sleep(0.5)
+        time.sleep(0.2)
 
 except KeyboardInterrupt:
     GPIO.cleanup()
