@@ -1,5 +1,6 @@
 import unittest
 import blindspot
+import led_notification
 import RPi.GPIO as GPIO
 import time
 
@@ -47,35 +48,39 @@ class LedTest(unittest.TestCase):
     test suite for LED notification
     '''
     # two pins used for notification, left=26 and right=20
-    pins = [20, 26]
+    RIGHT_LED = 20
+    LEFT_LED = 26
 
     def setUp(self):
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.pins, GPIO.OUT)
+        ##print("GPIO mode set to BCM")
+        self.leftLed = led_notification.LED(self.LEFT_LED)
+        ##print("Created left led object")
+        self.rightLed = led_notification.LED(self.RIGHT_LED)
+        ##print("Created right led object")
 
     def tearDown(self):
-        GPIO.cleanup()
+        led_notification.cleanUp()
 
     def test_rightLed_on(self):
-        GPIO.output(20, GPIO.HIGH)
+        self.rightLed.ledOn()
         self.assertEqual(GPIO.input(20), 1)
         time.sleep(1)
 
     def test_leftLed_on(self):
-        GPIO.output(26, GPIO.HIGH)
+        self.leftLed.ledOn()
         self.assertEqual(GPIO.input(26), 1)
         time.sleep(1)
 
     def test_rightLed_off(self):
-        GPIO.output(20, GPIO.LOW)
+        self.rightLed.ledOff()
         self.assertEqual(GPIO.input(20), 0)
         time.sleep(1)
 
     def test_leftLed_off(self):
-        GPIO.output(26, GPIO.LOW)
+        self.leftLed.ledOff()
         self.assertEqual(GPIO.input(26), 0)
         time.sleep(1)
-
 
 
 if __name__ == "__main__":
