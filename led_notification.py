@@ -1,4 +1,6 @@
 import RPi.GPIO as GPIO
+import time
+
 
 GPIO.setmode(GPIO.BCM)
 
@@ -23,8 +25,6 @@ class LED:
     def ledOff(self):
         GPIO.output(self.PIN, GPIO.LOW)
 
-
-
-
+## must be called before exiting
 def cleanUp():
     GPIO.cleanup() 
