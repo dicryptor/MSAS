@@ -11,11 +11,11 @@ LEFT_LED = 26
 
 left_front = blindspot.USensor(0)
 right_front = blindspot.USensor(1)
+print("Initializing notification LEDs..")
 leftLed = led_notification.LED(LEFT_LED)
 rightLed = led_notification.LED(RIGHT_LED)
 
-
-
+print("Starting detection cycle")
 try:
     while True:
         val1 = left_front.get_value()
