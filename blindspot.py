@@ -1,28 +1,33 @@
 import time
-import Adafruit_ADS1x15
-import RPi.GPIO
+import smbus2 as smbus
+
+
 
 class USensor:
     '''
     class to create blindsport sensor object
     '''
-    GAIN = 2
-    ADC = Adafruit_ADS1x15.ADS1015()
+    I2C = smbus.SMBus(1)
 
-    def __init__(self, channel):
-        self.channel = channel
+    def __init__(self, i2caddr):
+        self.i2caddr = i2caddr
+
+
+    def rrange(self):
+        self.I2C.write_byte_data(self.i2caddr, 0, 81)
+
+
+    def rread(self):
+        return self.I2C.read_word_data(self.i2caddr, 2) / 255
+
 
     def get_value(self):
-        value = self.ADC.read_adc(self.channel, gain=self.GAIN)
-        return value
-
+        self.rrange()
+        time.sleep(0.1)
+        return self.rread()
 
 
 if __name__ == "__main__":
-    left_front = USensor(0)
-    right_front = USensor(1)
-
-    for i in range(5):
-        print(left_front.get_value())
-        print(right_front.get_value())
-        time.sleep(0.5)
+    test_sensor = USensor(0x70)
+    print("Address is {}".format(test_sensor.i2caddr))
+    print("Sensor value is {}".format(test_sensor.get_value()))
