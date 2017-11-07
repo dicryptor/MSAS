@@ -28,7 +28,7 @@ print("Starting detection cycle")
 try:
     while True:
         trigger()
-        time.sleep(0.2)
+        time.sleep(0.07)
         val1 = left_front.rread()
         val2 = right_front.rread()
         val3 = left_back.rread()
