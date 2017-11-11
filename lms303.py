@@ -76,7 +76,7 @@ class LSM303(object):
         # mag = struct.unpack('>hhh', mag_raw)
         return accel
 
-if __name__ == __"main":
+if __name__ == "__main__":
     lms303 = LMS303()
     while True:
         accel = lms303.read()
