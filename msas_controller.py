@@ -1,5 +1,6 @@
 import sys
 import time
+from datetime import datetime as dt
 import blindspot
 import led_notification
 
@@ -38,7 +39,7 @@ try:
         vals[2] = left_back.rread()
         vals[3] = right_back.rread()
 
-        print("| {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(*vals))
+        print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(),*vals))
 
         if vals[0] > DETECT and vals[2] < DETECT:
             leftLed.ledOn()
