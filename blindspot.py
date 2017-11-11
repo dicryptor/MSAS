@@ -27,7 +27,7 @@ class USensor:
 
     def get_value(self):
         self.rrange()
-        time.sleep(0.1)
+        time.sleep(0.7)
         return self.rread()
 
 
