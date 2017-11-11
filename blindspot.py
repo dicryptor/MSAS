@@ -16,6 +16,10 @@ class USensor:
     def rrange(self):
         self.I2C.write_byte_data(self.i2caddr, 0, 81)
 
+    ## For testing
+    def rrange_norange(self):
+        self.I2C.write_byte_data(self.i2caddr, 0, 92)
+
 
     def rread(self):
         return self.I2C.read_word_data(self.i2caddr, 2) / 255
@@ -28,6 +32,7 @@ class USensor:
 
 
 if __name__ == "__main__":
-    test_sensor = USensor(0x70)
+    test_sensor = USensor(0x71)
     print("Address is {}".format(test_sensor.i2caddr))
-    print("Sensor value is {}".format(test_sensor.get_value()))
+    while True:
+        print("Sensor value is {}".format(test_sensor.get_value()))
