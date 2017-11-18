@@ -95,12 +95,10 @@ class Adafruit_I2C:
         try:
             result = self.bus.read_byte_data(self.address, reg)
             if (self.debug):
-                print
-                "I2C: Device 0x%02X returned 0x%02X from reg 0x%02X" % (self.address, result & 0xFF, reg)
+                print("I2C: Device 0x{} returned 0x{} from reg 0x{}".format(self.address, result & 0xFF, reg))
             return result
-        except IOError, err:
-            print
-            "Error accessing 0x%02X: Check your I2C address" % self.address
+        except IOError as err:
+            print("Error accessing 0x%02X: Check your I2C address" % self.address)
             return -1
 
     def readS8(self, reg):
@@ -114,7 +112,7 @@ class Adafruit_I2C:
                 return result - 256
             else:
                 return result
-        except IOError, err:
+        except IOError as err:
             print
             "Error accessing 0x%02X: Check your I2C address" % self.address
             return -1
@@ -128,7 +126,7 @@ class Adafruit_I2C:
                 print
                 "I2C: Device 0x%02X returned 0x%04X from reg 0x%02X" % (self.address, result & 0xFFFF, reg)
             return result
-        except IOError, err:
+        except IOError as err:
             print
             "Error accessing 0x%02X: Check your I2C address" % self.address
             return -1
@@ -144,7 +142,7 @@ class Adafruit_I2C:
                 print
                 "I2C: Device 0x%02X returned 0x%04X from reg 0x%02X" % (self.address, result & 0xFFFF, reg)
             return result
-        except IOError, err:
+        except IOError as err:
             print
             "Error accessing 0x%02X: Check your I2C address" % self.address
             return -1
