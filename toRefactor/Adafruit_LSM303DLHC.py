@@ -128,22 +128,22 @@ class LSM303DLHC :
     "Reads the accelerometer data from the sensor"
     xlo = self.i2c_accel.readU8(self.__LSM303DLHC_REGISTER_ACCEL_OUT_X_L_A)
     if (self.debug):
-      print "DBG: accel X lo: 0x%04X (%d)" % (xlo & 0xFFFF, xlo)
+      print("DBG: accel X lo: 0x{} {}".format(xlo & 0xFFFF, xlo))
     xhi = self.i2c_accel.readU8(self.__LSM303DLHC_REGISTER_ACCEL_OUT_X_H_A)
     if (self.debug):
-      print "DBG: accel X hi: 0x%04X (%d)" % (xhi & 0xFFFF, xhi)
+      print("DBG: accel X hi: 0x{} {}".format(xhi & 0xFFFF, xhi))
     ylo = self.i2c_accel.readU8(self.__LSM303DLHC_REGISTER_ACCEL_OUT_Y_L_A)
     if (self.debug):
-      print "DBG: accel Y lo: 0x%04X (%d)" % (ylo & 0xFFFF, ylo)
+      print("DBG: accel Y lo: 0x{} {}".format(ylo & 0xFFFF, ylo))
     yhi = self.i2c_accel.readU8(self.__LSM303DLHC_REGISTER_ACCEL_OUT_Y_H_A)
     if (self.debug):
-      print "DBG: accel Y hi: 0x%04X (%d)" % (yhi & 0xFFFF, yhi)
+      print("DBG: accel Y hi: 0x{} {}".format(yhi & 0xFFFF, yhi))
     zlo = self.i2c_accel.readU8(self.__LSM303DLHC_REGISTER_ACCEL_OUT_Z_L_A)
     if (self.debug):
-      print "DBG: accel Z lo: 0x%04X (%d)" % (zlo & 0xFFFF, zlo)
+      print("DBG: accel Z lo: 0x{} {}".format(zlo & 0xFFFF, zlo))
     zhi = self.i2c_accel.readU8(self.__LSM303DLHC_REGISTER_ACCEL_OUT_Z_H_A)
     if (self.debug):
-      print "DBG: accel Z hi: 0x%04X (%d)" % (zhi & 0xFFFF, zhi)
+      print("DBG: accel Z hi: 0x{} ({})".format(zhi & 0xFFFF, zhi))
 
     accelData = Obj3D()
     accelData.x = (((xhi << 8) + xlo) >> 4)
@@ -190,7 +190,7 @@ class LSM303DLHC :
       self.accelDataRate = 0b1001
       self.accelLowPower = 0b1
     else:
-      print "setAccelerometerDataRate can be 0, 1, 10, 25, 50, 100, 200, 400, 1344, 1620 or 5376"
+      print("setAccelerometerDataRate can be 0, 1, 10, 25, 50, 100, 200, 400, 1344, 1620 or 5376")
     self.__setCtrlReg1A()
 
   def setAccelerometerLowPowerMode(self, val):
@@ -200,7 +200,7 @@ class LSM303DLHC :
     elif val == True:
       self.accelLowPower = 0b1
     else:
-      print "setAccelerometerLowPowerMode takes boolean input only"
+      print("setAccelerometerLowPowerMode takes boolean input only")
     self.__setCtrlReg1A()
 
   def setAccelerometerScale(self, scale):
@@ -218,7 +218,7 @@ class LSM303DLHC :
       self.accelScale = 0b11
       self.accelFactor = 0.012
     else:
-      print "setAccelerometerScale takes values 2, 4, 8 or 16 only"
+      print("setAccelerometerScale takes values 2, 4, 8 or 16 only")
     self.__setCtrlReg4A()
 
   def setAccelerometerHighResolution(self, val):
@@ -228,41 +228,41 @@ class LSM303DLHC :
     elif val == True:
       self.accelHiRez = 0b1
     else:
-      print "setAccelerometerHighResolution takes boolean input only"
+      print("setAccelerometerHighResolution takes boolean input only")
     self.__setCtrlReg4A()
 
   def __setCtrlReg1A(self):
     param = (self.accelDataRate << 4) + (self.accelLowPower << 3) + self.accelAxes
     if (self.debug):
-      print "New CTRL_REG1_A(20h): 0x%02X (%d)" % (param & 0xFF, param)
+      print("New CTRL_REG1_A(20h): 0x%02X (%d)" % (param & 0xFF, param))
     self.i2c_accel.write8(self.__LSM303DLHC_REGISTER_ACCEL_CTRL_REG1_A, param)
 
   def __setCtrlReg4A(self):
     param = (self.accelScale << 4) + (self.accelHiRez << 3)
     if (self.debug):
-      print "New CTRL_REG4_A(23h): 0x%02X (%d)" % (param & 0xFF, param)
+      print("New CTRL_REG4_A(23h): 0x{} ({})".format(param & 0xFF, param))
     self.i2c_accel.write8(self.__LSM303DLHC_REGISTER_ACCEL_CTRL_REG4_A, param)
 
   def readMagnetics(self):
     "Reads the magmetometer data from the sensor"
     xlo = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_OUT_X_L_M)
     if (self.debug):
-      print "DBG: mag X lo: 0x%04X (%d)" % (xlo & 0xFFFF, xlo)
+      print("DBG: mag X lo: 0x{} ({})".format(xlo & 0xFFFF, xlo))
     xhi = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_OUT_X_H_M)
     if (self.debug):
-      print "DBG: mag X hi: 0x%04X (%d)" % (xhi & 0xFFFF, xhi)
+      print("DBG: mag X hi: 0x{} ({})".format(xhi & 0xFFFF, xhi))
     ylo = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_OUT_Y_L_M)
     if (self.debug):
-      print "DBG: mag Y lo: 0x%04X (%d)" % (ylo & 0xFFFF, ylo)
+      print("DBG: mag Y lo: 0x{} ({})".format(ylo & 0xFFFF, ylo))
     yhi = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_OUT_Y_H_M)
     if (self.debug):
-      print "DBG: mag Y hi: 0x%04X (%d)" % (yhi & 0xFFFF, yhi)
+      print("DBG: mag Y hi: 0x{} ({})".format(yhi & 0xFFFF, yhi))
     zlo = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_OUT_Z_L_M)
     if (self.debug):
-      print "DBG: mag Z lo: 0x%04X (%d)" % (zlo & 0xFFFF, zlo)
+      print("DBG: mag Z lo: 0x{} ({})".format(zlo & 0xFFFF, zlo))
     zhi = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_OUT_Z_H_M)
     if (self.debug):
-      print "DBG: mag Z hi: 0x%04X (%d)" % (zhi & 0xFFFF, zhi)
+      print("DBG: mag Z hi: 0x{} ({})".format(zhi & 0xFFFF, zhi))
 
     magData = Obj3D()
     magData.x = (((xhi & 0x000F) << 8) + xlo)
@@ -310,7 +310,7 @@ class LSM303DLHC :
       self.i2c_mag.write8(self.__LSM303DLHC_REGISTER_MAG_CRB_REG_M, 0xE0)
       self.magFactor = 1 / 230.0
     else:
-      print "setMagnetometerRange values allowed are 1.3, 1.9, 2.5, 4.0, 4.7, 5.6 or 8.1."
+      print("setMagnetometerRange values allowed are 1.3, 1.9, 2.5, 4.0, 4.7, 5.6 or 8.1.")
 
   def setTempEnabled(self, val=False):
     if val == False:
@@ -318,7 +318,7 @@ class LSM303DLHC :
     elif val == True:
       self.tempEnabled = 0b1
     else:
-      print "setTempEnabled takes boolean input only"
+      print("setTempEnabled takes boolean input only")
     self.__setCraRegM()
 
   def setMagDataRate(self, rate=15.0):
@@ -339,23 +339,23 @@ class LSM303DLHC :
     elif rate == 220:
       self.magDataRate = 0b111
     else:
-      print "setMagDataRate can be 0.75, 1.5, 3.0, 7.5, 15, 30, 75 or 220"
+      print("setMagDataRate can be 0.75, 1.5, 3.0, 7.5, 15, 30, 75 or 220")
     self.__setCraRegM()
 
   def __setCraRegM(self):
     param = (self.tempEnabled << 7) + (self.magDataRate << 2)
     if (self.debug):
-      print "New CRA_REG_M(00h): 0x%02X (%d)" % (param & 0xFF, param)
+      print("New CRA_REG_M(00h): 0x{} ({})".format(param & 0xFF, param))
     self.i2c_mag.write8(self.__LSM303DLHC_REGISTER_MAG_CRA_REG_M, param)
 
   def readTemperature(self):
     "Reads the temperature data from the sensor"
     tlo = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_TEMP_OUT_L_M)
     if (self.debug):
-      print "DBG: Temp lo: 0x%04X (%d)" % (tlo & 0xFFFF, tlo)
+      print("DBG: Temp lo: 0x{} ({})".format(tlo & 0xFFFF, tlo))
     thi = self.i2c_mag.readU8(self.__LSM303DLHC_REGISTER_MAG_TEMP_OUT_H_M)
     if (self.debug):
-      print "DBG: Temp hi: 0x%04X (%d)" % (thi & 0xFFFF, thi)
+      print("DBG: Temp hi: 0x{} ({})".format(thi & 0xFFFF, thi))
     return ((thi << 8) + tlo) >> 4
 
   def readTemperatureCelsius(self):
@@ -367,58 +367,59 @@ class LSM303DLHC :
     "compute the 2's compliment of int value val"
     if( (val&(1<<(bits-1))) != 0 ):
         val = val - (1<<bits)
-    return val
-
+        return val
     return 0
 
 class Obj3D :
-	x = None
-	y = None
-	z = None
+  x = None
+  y = None
+  z = None
 
 class LSM303DLHCLibraryTests(unittest.TestCase):
-	def setUp(self):
-		self.lsm = LSM303DLHC()
-		self.lsm.setTempEnabled(True)
-		pass
+  def setUp(self):
+    self.lsm = LSM303DLHC()
+    self.lsm.setTempEnabled(True)
+    pass
 
-	def tearDown(self):
-		self.lsm = None
-		pass
+  def tearDown(self):
+    self.lsm = None
+    pass
 
-	def test_reading_raw(self):
-		count = 0
-		print ""
-		while count < 3:
-			time.sleep(0.25)
-			accel = self.lsm.readAccelerations()
-			mag = self.lsm.readMagnetics()
-			temp = self.lsm.readTemperature()
-			print "Timestamp: %s" % datetime.now().isoformat() #strftime('%Y-%m-%dT%H:%M:%S(%Z)')
-			print "Accel X: 0x%04X (%d) Y: 0x%04X (%d) Z: 0x%04X (%d)" % (accel.x & 0xFFFF, accel.x, accel.y & 0xFFFF, accel.y, accel.z & 0xFFFF, accel.z)
-			print "Mag   X: 0x%04X (%d) Y: 0x%04X (%d) Z: 0x%04X (%d)" % (mag.x & 0xFFFF, mag.x, mag.y & 0xFFFF, mag.y, mag.z & 0xFFFF, mag.z)
-			print "Temp   : 0x%04X (%d)" % (temp & 0xFFFF, temp)
-			count = count + 1
-		pass
+  def test_reading_raw(self):
+    count = 0
+    print("")
+    while count < 3:
+        time.sleep(0.25)
+        accel = self.lsm.readAccelerations()
+            mag = self.lsm.readMagnetics()
+            temp = self.lsm.readTemperature()
+            print("Timestamp: {}".format(datetime.now().isoformat())) #strftime('%Y-%m-%dT%H:%M:%S(%Z)')
+            print("Accel X: 0x{} ({}) Y: 0x{} ({}) Z: 0x{} ({})".format(
+                accel.x & 0xFFFF, accel.x, accel.y & 0xFFFF, accel.y, accel.z & 0xFFFF, accel.z))
+            print("Mag   X: 0x{} ({}) Y: 0x{} ({}) Z: 0x{} ({})".format(
+                mag.x & 0xFFFF, mag.x, mag.y & 0xFFFF, mag.y, mag.z & 0xFFFF, mag.z))
+            print("Temp   : 0x{} ({})".format(temp & 0xFFFF, temp))
+            count = count + 1
+        pass
 
-	def test_reading_converted(self):
-		count = 0
-		print ""
-		while count < 3:
-			time.sleep(0.25)
-			accel = self.lsm.readAccelerationsG()
-			mag = self.lsm.readMagneticsGauss()
-			temp = self.lsm.readTemperatureCelsius()
-			heading = self.lsm.readMagneticHeading()
-			print "Timestamp: %s" % datetime.now().isoformat() #strftime('%Y-%m-%dT%H:%M:%S(%Z)')
-			print "Accel X: %6.3f G,     Y: %6.3f G,     Z: %6.3f G" % (accel.x, accel.y, accel.z)
-			print "Mag   X: %6.3f gauss, Y: %6.3f gauss, Z: %6.3f gauss" % (mag.x, mag.y, mag.z)
-			print "Temp:    %6.3f C" % (temp)
-			print "Heading: %6.3f" % (heading)
-			count = count + 1
-		pass
+    def test_reading_converted(self):
+        count = 0
+        print("")
+        while count < 3:
+            time.sleep(0.25)
+            accel = self.lsm.readAccelerationsG()
+            mag = self.lsm.readMagneticsGauss()
+            temp = self.lsm.readTemperatureCelsius()
+            heading = self.lsm.readMagneticHeading()
+            print("Timestamp: {}".format(datetime.now().isoformat())) #strftime('%Y-%m-%dT%H:%M:%S(%Z)')
+            print("Accel X: {:>6.3f} G,     Y: {:>6.3f} G,     Z: {:>6.3f} G".format(accel.x, accel.y, accel.z))
+            print("Mag   X: {:>6.3f} gauss, Y: {:>6.3f} gauss, Z: {:>6.3f} gauss".format(mag.x, mag.y, mag.z))
+            print("Temp:    {:>6.3f} C".format(temp))
+            print("Heading: {:>6.3f}".format(heading))
+            count = count + 1
+        pass
 
 if __name__ == '__main__':
-	#unittest.main()
-	suite = unittest.TestLoader().loadTestsFromTestCase(LSM303DLHCLibraryTests)
-	unittest.TextTestRunner(verbosity=2).run(suite)
+    #unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(LSM303DLHCLibraryTests)
+    unittest.TextTestRunner(verbosity=2).run(suite)
