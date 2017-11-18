@@ -35,7 +35,7 @@ class Adafruit_I2C:
         except:
             return 0
 
-    def __init__(self, address, bus=smbus.SMBus(1 if getPiRevision() > 1 else 0), debug=False):
+    def __init__(self, address, bus=smbus.SMBus(1), debug=False):
         self.address = address
         # By default, the correct I2C bus is auto-detected using /proc/cpuinfo
         self.bus = bus
@@ -73,9 +73,8 @@ class Adafruit_I2C:
                 print("I2C: Writing list to register 0x{}:".format(reg))
                 print(list)
             self.bus.write_i2c_block_data(self.address, reg, list)
-        except IOError, err:
-            print
-            "Error accessing 0x%02X: Check your I2C address" % self.address
+        except IOError as err:
+            print("Error accessing 0x%02X: Check your I2C address".format(self.address))
             return -1
 
     def readList(self, reg, length):
@@ -84,14 +83,11 @@ class Adafruit_I2C:
         try:
             results = self.bus.read_i2c_block_data(self.address, reg, length)
             if (self.debug):
-                print
-                "I2C: Device 0x%02X returned the following from reg 0x%02X" % (self.address, reg)
-                print
-                results
+                print("I2C: Device 0x%02X returned the following from reg 0x%02X".format(self.address, reg))
+                print(results)
             return results
-        except IOError, err:
-            print
-            "Error accessing 0x%02X: Check your I2C address" % self.address
+        except IOError as err:
+            print("Error accessing 0x{}: Check your I2C address".format(self.address))
             return -1
 
     def readU8(self, reg):
