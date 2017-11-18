@@ -8,6 +8,7 @@ import math
 from datetime import datetime, date
 from Adafruit_I2C import Adafruit_I2C
 import unittest
+import weewee
 
 
 # ===========================================================================
