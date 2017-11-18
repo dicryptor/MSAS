@@ -22,28 +22,29 @@ class BlindspotTest(unittest.TestCase):
 
     ### Check for sensor reading, GT 0(noise readings) and LT 250(in CM)
     def test_leftFront_gt_0(self):
-        self.assertGreater(self.leftFront.get_value(), self.MIN, "Sensor reading greater than 0") 
+        self.assertGreater(self.leftFront.get_value(), self.MIN, "Sensor reading greater than 0")
 
     def test_rightFront_gt_0(self):
-        self.assertGreater(self.rightFront.get_value(), self.MIN, "Sensor reading greater than 0") 
+        self.assertGreater(self.rightFront.get_value(), self.MIN, "Sensor reading greater than 0")
 
     def test_leftBack_gt_0(self):
-        self.assertGreater(self.leftFront.get_value(), self.MIN, "Sensor reading greater than 0") 
+        self.assertGreater(self.leftFront.get_value(), self.MIN, "Sensor reading greater than 0")
 
     def test_rightBack_gt_0(self):
-        self.assertGreater(self.rightFront.get_value(), self.MIN, "Sensor reading greater than 0") 
+        self.assertGreater(self.rightFront.get_value(), self.MIN, "Sensor reading greater than 0")
 
     def test_leftFront_lt_250(self):
-        self.assertLess(self.leftFront.get_value(), self.MAX) 
+        self.assertLess(self.leftFront.get_value(), self.MAX)
 
     def test_rightFront_lt_250(self):
-        self.assertLess(self.rightFront.get_value(), self.MAX) 
+        self.assertLess(self.rightFront.get_value(), self.MAX)
 
     def test_leftBack_lt_250(self):
-        self.assertLess(self.leftBack.get_value(), self.MAX) 
+        self.assertLess(self.leftBack.get_value(), self.MAX)
 
     def test_rightBack_lt_250(self):
-        self.assertLess(self.rightBack.get_value(), self.MAX) 
+        self.assertLess(self.rightBack.get_value(), self.MAX)
+
 
 class LedTest(unittest.TestCase):
     '''
@@ -84,8 +85,8 @@ class LedTest(unittest.TestCase):
         self.assertEqual(GPIO.input(26), 0)
         time.sleep(1)
 
-class TipOverTest(unittest.TestCase):
 
+class TipOverTest(unittest.TestCase):
     def setUp(self):
         self.lsm303 = lsm303.LSM303()
         self.accel = lsm303.read()
@@ -95,8 +96,5 @@ class TipOverTest(unittest.TestCase):
         self.assertTrue(-)
 
 
-
-
 if __name__ == "__main__":
     unittest.main(warnings='ignore')
-

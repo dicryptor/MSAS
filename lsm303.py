@@ -21,18 +21,16 @@
 # SOFTWARE.
 import struct, time
 
-
 # Minimal constants carried over from Arduino library:
 LSM303_ADDRESS_ACCEL = (0x32 >> 1)  # 0011001x
 # LSM303_ADDRESS_MAG   = (0x3C >> 1)  # 0011110x
-                                         # Default    Type
-LSM303_REGISTER_ACCEL_CTRL_REG1_A = 0x20 # 00000111   rw
-LSM303_REGISTER_ACCEL_CTRL_REG4_A = 0x23 # 00000000   rw
-LSM303_REGISTER_ACCEL_OUT_X_L_A   = 0x28
-LSM303_REGISTER_MAG_CRB_REG_M     = 0x01
-LSM303_REGISTER_MAG_MR_REG_M      = 0x02
-LSM303_REGISTER_MAG_OUT_X_H_M     = 0x03
-
+# Default    Type
+LSM303_REGISTER_ACCEL_CTRL_REG1_A = 0x20  # 00000111   rw
+LSM303_REGISTER_ACCEL_CTRL_REG4_A = 0x23  # 00000000   rw
+LSM303_REGISTER_ACCEL_OUT_X_L_A = 0x28
+LSM303_REGISTER_MAG_CRB_REG_M = 0x01
+LSM303_REGISTER_MAG_MR_REG_M = 0x02
+LSM303_REGISTER_MAG_OUT_X_H_M = 0x03
 
 
 class LSM303(object):
@@ -59,8 +57,8 @@ class LSM303(object):
             self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00001000)
         else:
             self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0)
-        # Enable the magnetometer
-        # self._mag.write8(LSM303_REGISTER_MAG_MR_REG_M, 0x00)
+            # Enable the magnetometer
+            # self._mag.write8(LSM303_REGISTER_MAG_MR_REG_M, 0x00)
 
     def read(self):
         """Read the accelerometer and magnetometer value.  A tuple of tuples will
@@ -76,6 +74,7 @@ class LSM303(object):
         # mag_raw = self._mag.readList(LSM303_REGISTER_MAG_OUT_X_H_M, 6)
         # mag = struct.unpack('>hhh', mag_raw)
         return accel
+
 
 if __name__ == "__main__":
     lsm303 = LSM303()

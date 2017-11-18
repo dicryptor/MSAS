@@ -18,15 +18,18 @@ print("Initializing notification LEDs..")
 leftLed = led_notification.LED(LEFT_LED)
 rightLed = led_notification.LED(RIGHT_LED)
 
+
 def trigger_front():
     left_front.rrange()
     right_front.rrange()
+
 
 def trigger_back():
     left_back.rrange()
     right_back.rrange()
 
-vals = [0,0,0,0]
+
+vals = [0, 0, 0, 0]
 print("Starting detection cycle")
 try:
     while True:
@@ -39,7 +42,7 @@ try:
         vals[2] = left_back.rread()
         vals[3] = right_back.rread()
 
-        print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(),*vals))
+        print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(), *vals))
 
         if vals[0] > DETECT and vals[2] < DETECT:
             leftLed.ledOn()

@@ -4,6 +4,7 @@ import sys
 
 GPIO.setmode(GPIO.BCM)
 
+
 class LED:
     '''
     to manage led notification
@@ -14,18 +15,15 @@ class LED:
         GPIO.setup(self.PIN, GPIO.OUT)
         ## init led indication
         self.ledBlink()
-        #GPIO.output(self.PIN, GPIO.HIGH)
-        #time.sleep(2)
-        #GPIO.output(self.PIN, GPIO.LOW)
-
+        # GPIO.output(self.PIN, GPIO.HIGH)
+        # time.sleep(2)
+        # GPIO.output(self.PIN, GPIO.LOW)
 
     def ledOn(self):
         GPIO.output(self.PIN, GPIO.HIGH)
 
-
     def ledOff(self):
         GPIO.output(self.PIN, GPIO.LOW)
-
 
     def ledBlink(self):
         for i in range(3):
@@ -37,7 +35,7 @@ class LED:
 
 ## must be called before exiting
 def cleanUp():
-    GPIO.cleanup() 
+    GPIO.cleanup()
 
 
 if __name__ == "__main__":

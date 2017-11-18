@@ -13,4 +13,3 @@ GPIO.output(26, GPIO.LOW)
 GPIO.output(20, GPIO.LOW)
 
 GPIO.cleanup()
-

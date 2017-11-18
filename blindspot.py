@@ -2,7 +2,6 @@ import time
 import smbus2 as smbus
 
 
-
 class USensor:
     '''
     class to create blindsport sensor object
@@ -12,7 +11,6 @@ class USensor:
     def __init__(self, i2caddr):
         self.i2caddr = i2caddr
 
-
     def rrange(self):
         self.I2C.write_byte_data(self.i2caddr, 0, 81)
 
@@ -20,10 +18,8 @@ class USensor:
     def rrange_norange(self):
         self.I2C.write_byte_data(self.i2caddr, 0, 92)
 
-
     def rread(self):
         return self.I2C.read_word_data(self.i2caddr, 2) / 255
-
 
     def get_value(self):
         self.rrange()

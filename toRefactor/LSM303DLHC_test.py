@@ -16,14 +16,14 @@ from Adafruit_LSM303DLHC import LSM303DLHC
 lsm = LSM303DLHC(0x19, 0x1E, False)
 lsm.setTempEnabled(True)
 
-while(1):
+while (1):
     time.sleep(0.25)
     accel = lsm.readAccelerationsG()
     mag = lsm.readMagneticsGauss()
     temp = lsm.readTemperatureCelsius()
     heading = lsm.readMagneticHeading()
 
-    print("Timestamp: {}".format(datetime.now().isoformat())) #strftime('%Y-%m-%dT%H:%M:%S(%Z)')
+    print("Timestamp: {}".format(datetime.now().isoformat()))  # strftime('%Y-%m-%dT%H:%M:%S(%Z)')
     print("Accel X: {:>6.3f}G,     Y: {:>6.3f}G,     Z: {:>6.3f}G".format(accel.x, accel.y, accel.z))
     print("Mag   X: {:>6.3f} gauss, Y: {:>6.3f} gauss, Z: {:>6.3f} gauss".format(mag.x, mag.y, mag.z))
     print("Temp:    {:>6.3f} C".format(temp))
