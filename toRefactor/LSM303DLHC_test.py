@@ -23,8 +23,8 @@ while(1):
     temp = lsm.readTemperatureCelsius()
     heading = lsm.readMagneticHeading()
 
-    print "Timestamp: %s" % datetime.now().isoformat() #strftime('%Y-%m-%dT%H:%M:%S(%Z)')
-    print "Accel X: %6.3f G,     Y: %6.3f G,     Z: %6.3f G" % (accel.x, accel.y, accel.z)
-    print "Mag   X: %6.3f gauss, Y: %6.3f gauss, Z: %6.3f gauss" % (mag.x, mag.y, mag.z)
-    print "Temp:    %6.3f C" % (temp)
-    print "Heading: %6.3f" % (heading)
+    print("Timestamp: {}".format(datetime.now().isoformat())) #strftime('%Y-%m-%dT%H:%M:%S(%Z)')
+    print("Accel X: {:>6.3f}G,     Y: {:>6.3f}G,     Z: {:>6.3f}G".format(accel.x, accel.y, accel.z))
+    print("Mag   X: {:>6.3f} gauss, Y: {:>6.3f} gauss, Z: {:>6.3f} gauss".format(mag.x, mag.y, mag.z))
+    print("Temp:    {:>6.3f} C".format(temp))
+    print("Heading: {:>6.3f}".format(heading))

@@ -1,6 +1,7 @@
 import unittest
 import blindspot
 import led_notification
+import lsm303
 import RPi.GPIO as GPIO
 import time
 
@@ -82,6 +83,18 @@ class LedTest(unittest.TestCase):
         self.leftLed.ledOff()
         self.assertEqual(GPIO.input(26), 0)
         time.sleep(1)
+
+class TipOverTest(unittest.TestCase):
+
+    def setUp(self):
+        self.lsm303 = lsm303.LSM303()
+        self.accel = lsm303.read()
+        self.acc_x, self.acc_y, self.acc_z = accel
+
+    def test_get_x_axis(self):
+        self.assertTrue(-)
+
+
 
 
 if __name__ == "__main__":
