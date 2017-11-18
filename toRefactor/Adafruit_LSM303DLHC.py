@@ -3,7 +3,7 @@
 import sys
 import os
 import time
-import smbus
+import smbus2 as smbus
 import math
 from datetime import datetime, date
 from Adafruit_I2C import Adafruit_I2C
