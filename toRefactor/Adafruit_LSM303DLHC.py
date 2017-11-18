@@ -6,7 +6,8 @@ import time
 import smbus2 as smbus
 import math
 from datetime import datetime, date
-from Adafruit_I2C import Adafruit_I2C
+#from I2C import I2C 
+from Adafruit_GPIO.I2C import I2C
 import unittest
 
 
@@ -95,8 +96,8 @@ class LSM303DLHC:
 
     # Constructor
     def __init__(self, address_accel=0x19, address_mag=0x1E, debug=False):
-        self.i2c_accel = Adafruit_I2C(address_accel, smbus.SMBus(1 if self.getPiRevision() > 1 else 0), debug)
-        self.i2c_mag = Adafruit_I2C(address_mag, smbus.SMBus(1 if self.getPiRevision() > 1 else 0), debug)
+        self.i2c_accel = I2C(address_accel, smbus.SMBus(1 if self.getPiRevision() > 1 else 0), debug)
+        self.i2c_mag = I2C(address_mag, smbus.SMBus(1 if self.getPiRevision() > 1 else 0), debug)
 
         self.address_accel = address_accel
         self.address_mag = address_mag

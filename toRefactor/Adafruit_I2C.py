@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import smbus
+import smbus2 as smbus
 
 # ===========================================================================
 # Adafruit_I2C Base Class
@@ -61,21 +61,17 @@ class Adafruit_I2C:
         try:
             self.bus.write_byte_data(self.address, reg, value)
             if (self.debug):
-                print
-                "I2C: Wrote 0x%02X to register 0x%02X" % (value, reg)
-        except IOError, err:
-            print
-            "Error accessing 0x%02X: Check your I2C address" % self.address
+                print("I2C: Wrote 0x{} to register 0x{}".format(value, reg))
+        except IOError as err:
+            print("Error accessing 0x%02X: Check your I2C address".format(self.address))
             return -1
 
     def writeList(self, reg, list):
         "Writes an array of bytes using I2C format"
         try:
             if (self.debug):
-                print
-                "I2C: Writing list to register 0x%02X:" % reg
-                print
-                list
+                print("I2C: Writing list to register 0x{}:".format(reg))
+                print(list)
             self.bus.write_i2c_block_data(self.address, reg, list)
         except IOError, err:
             print
