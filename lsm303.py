@@ -63,6 +63,25 @@ class LSM303(object):
             # Enable the magnetometer
             # self._mag.write8(LSM303_REGISTER_MAG_MR_REG_M, 0x00)
 
+    # TODO scaling factor works but needs to be incorporated properly for easy chage
+    # def setAccelerometerScale(self, scale):
+    #     "Sets the accelerometer measurement scale"
+    #     if scale == 2:
+    #         self.accelScale = 0b00
+    #         self.accelFactor = 0.001
+    #     elif scale == 4:
+    #         self.accelScale = 0b01
+    #         self.accelFactor = 0.002
+    #     elif scale == 8:
+    #         self.accelScale = 0b10
+    #         self.accelFactor = 0.004
+    #     elif scale == 16:
+    #         self.accelScale = 0b11
+    #         self.accelFactor = 0.012
+    #     else:
+    #         print("setAccelerometerScale takes values 2, 4, 8 or 16 only")
+    #     self.__setCtrlReg4A()
+
     def read(self):
         """Read the accelerometer and magnetometer value.  A tuple of tuples will
         be returned with:
