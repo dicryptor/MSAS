@@ -15,8 +15,8 @@ from Adafruit_LSM303DLHC import LSM303DLHC
 
 lsm = LSM303DLHC(0x19, 0x1E, False)
 lsm.setTempEnabled(False)
-lsm.setAccelerometerScale(2)
-lsm.setAccelerometerHighResolution(True)
+# lsm.setAccelerometerScale(2)
+# lsm.setAccelerometerHighResolution(True)
 
 while (1):
     time.sleep(0.25)
