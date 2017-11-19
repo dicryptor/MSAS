@@ -126,7 +126,7 @@ class lsm303d:
     # Set up the sensor
     def __init__(self, ):
         self.write_reg_accel(self.CTRL_REG1, 0x57)  # 0x57 = b01010111, 50hz, continuous update, all accel axes on
-        self.write_reg_accel(self.CTRL_REG2, 0xC0)  # set full-scale
+        self.write_reg_accel(self.CTRL_REG2, 0x00)  # set full-scale
         #  self.write_reg_accel((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
         self.write_reg_accel(self.CTRL_REG3, 0x00)  # no interrupt
         self.write_reg_accel(self.CTRL_REG4, 0x00)  # no interrupt
@@ -169,6 +169,7 @@ class lsm303d:
         raw_accel[0] = ((self.read_reg(self.OUT_X_H_A) << 8) | self.read_reg(self.OUT_X_L_A))
         raw_accel[1] = ((self.read_reg(self.OUT_Y_H_A) << 8) | self.read_reg(self.OUT_Y_L_A))
         raw_accel[2] = ((self.read_reg(self.OUT_Z_H_A) << 8) | self.read_reg(self.OUT_Z_L_A))
+        print("Raw from sensor", raw_accel)
 
         # 2's compiment
         for i in range(3):
