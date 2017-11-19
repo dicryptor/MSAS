@@ -20,10 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import struct, time, math
+from datetime import datetime as dt
 
 # Minimal constants carried over from Arduino library:
 LSM303_ADDRESS_ACCEL = (0x32 >> 1)  # 0011001x
-# LSM303_ADDRESS_MAG   = (0x3C >> 1)  # 0011110x
+LSM303_ADDRESS_MAG   = (0x3C >> 1)  # 0011110x
 # Default    Type
 LSM303_REGISTER_ACCEL_CTRL_REG1_A = 0x20  # 00000111   rw
 LSM303_REGISTER_ACCEL_CTRL_REG4_A = 0x23  # 00000000   rw
@@ -95,5 +96,6 @@ if __name__ == "__main__":
     while True:
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
-        print('Accel X={}, Accel Y={}, Accel Z={}'.format(acc_x, acc_y, acc_z))
+        now = dt.now().isoformat()
+        print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
         time.sleep(0.2)
