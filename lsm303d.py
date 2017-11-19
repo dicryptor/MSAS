@@ -37,8 +37,9 @@ THE SOFTWARE.
 
 import time, sys
 import RPi.GPIO as GPIO
-import smbus
+import smbus2 as smbus
 import math
+import time
 
 # use the bus that matches your raspi version
 rev = GPIO.RPI_REVISION
@@ -50,7 +51,7 @@ else:
 
 class lsm303d:
     # LSM303 Address definitions
-    LSM303D_ADDR = 0x1E  # assuming SA0 grounded
+    LSM303D_ADDR = (0x32 >> 1)  # assuming SA0 grounded
 
     # LSM303 Register definitions
     TEMP_OUT_L = 0x05
@@ -234,6 +235,6 @@ if __name__ == "__main__":
             if acc_mag.isMagReady():
                 break
         print(acc_mag.getHeading())
-
+        time.sleep(0.25)
         # Do not use, math error
         # print acc_mag.getTiltHeading()
