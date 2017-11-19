@@ -32,6 +32,8 @@ LSM303_REGISTER_MAG_CRB_REG_M = 0x01
 LSM303_REGISTER_MAG_MR_REG_M = 0x02
 LSM303_REGISTER_MAG_OUT_X_H_M = 0x03
 
+ACCEL_SCALE = 2
+
 
 class LSM303(object):
     """LSM303 accelerometer & magnetometer."""
@@ -80,11 +82,18 @@ class LSM303(object):
 
         return accel
 
+    def getRealAccel(self):
+        realAccel = [0.0, 0.0, 0.0]
+        accel = self.read()
+        for i in range(3):
+            realAccel[i] = round(accel[i] / math.pow(2, 15) * ACCEL_SCALE, 3)
+        return realAccel
+
 
 if __name__ == "__main__":
     lsm303 = LSM303()
     while True:
-        accel = lsm303.read()
+        accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
         print('Accel X={}, Accel Y={}, Accel Z={}'.format(acc_x, acc_y, acc_z))
         time.sleep(0.2)
