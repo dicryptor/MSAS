@@ -51,7 +51,8 @@ else:
 
 class lsm303d:
     # LSM303 Address definitions
-    LSM303D_ADDR = (0x32 >> 1)  # assuming SA0 grounded
+    LSM303D_ADDR_ACCEL = (0x32 >> 1)  # assuming SA0 grounded
+    LSM303D_ADDRESS_MAG = (0x3C >> 1)  # 0011110x
 
     # LSM303 Register definitions
     TEMP_OUT_L = 0x05
@@ -124,13 +125,13 @@ class lsm303d:
 
     # Set up the sensor
     def __init__(self, ):
-        self.write_reg(0x57, self.CTRL_REG1)  # 0x57 = ODR=50hz, all accel axes on
-        self.write_reg((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
-        self.write_reg(0x00, self.CTRL_REG3)  # no interrupt
-        self.write_reg(0x00, self.CTRL_REG4)  # no interrupt
-        self.write_reg((4 << 2), self.CTRL_REG5)  # 0x10 = mag 50Hz output rate
-        self.write_reg(self.MAG_SCALE_2, self.CTRL_REG6)  # magnetic scale = +/-1.3Gauss
-        self.write_reg(0x00, self.CTRL_REG7)  # 0x00 = continuous conversion mode
+        self.write_reg_acccel(0x57, self.CTRL_REG1)  # 0x57 = ODR=50hz, all accel axes on
+        self.write_reg_acccel((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
+        self.write_reg_acccel(0x00, self.CTRL_REG3)  # no interrupt
+        self.write_reg_acccel(0x00, self.CTRL_REG4)  # no interrupt
+        self.write_reg_mag((4 << 2), self.CTRL_REG5)  # 0x10 = mag 50Hz output rate
+        self.write_reg_mag(self.MAG_SCALE_2, self.CTRL_REG6)  # magnetic scale = +/-1.3Gauss
+        self.write_reg_mag(0x00, self.CTRL_REG7)  # 0x00 = continuous conversion mode
         time.sleep(.005)
 
     # get the status of the sensor
@@ -140,16 +141,24 @@ class lsm303d:
         return 1
 
     # Write data to a reg on the I2C device
-    def write_reg(self, data, reg):
-        bus.write_byte_data(self.LSM303D_ADDR, reg, data)
+    def write_reg_acccel(self, data, reg):
+        bus.write_byte_data(self.LSM303D_ADDR_ACCEL, reg, data)
 
     # Read data from the sensor
     def read_reg(self, reg):
-        return bus.read_byte_data(self.LSM303D_ADDR, reg)
+        return bus.read_byte_data(self.LSM303D_ADDR_ACCEL, reg)
+
+    # Write data to a reg on the I2C device
+    def write_reg_mag(self, data, reg):
+        bus.write_byte_data(self.LSM303D_ADDRESS_MAG, reg, data)
+
+    # Read data from the sensor
+    def read_reg_mag(self, reg):
+        return bus.read_byte_data(self.LSM303D_ADDRESS_MAG, reg)
 
     # Check if compass is ready
     def isMagReady(self):
-        if self.read_reg(self.STATUS_REG_M) & 0x03 != 0:
+        if self.read_reg_mag(self.STATUS_REG_M) & 0x03 != 0:
             return 1
         return 0
 
@@ -178,9 +187,9 @@ class lsm303d:
     # Get compass raw values
     def getMag(self):
         raw_mag = [0, 0, 0]
-        raw_mag[0] = (self.read_reg(self.OUT_X_H_M) << 8) | self.read_reg(self.OUT_X_L_M)
-        raw_mag[1] = (self.read_reg(self.OUT_Y_H_M) << 8) | self.read_reg(self.OUT_Y_L_M)
-        raw_mag[2] = (self.read_reg(self.OUT_Z_H_M) << 8) | self.read_reg(self.OUT_Z_L_M)
+        raw_mag[0] = (self.read_reg_mag(self.OUT_X_H_M) << 8) | self.read_reg_mag(self.OUT_X_L_M)
+        raw_mag[1] = (self.read_reg_mag(self.OUT_Y_H_M) << 8) | self.read_reg_mag(self.OUT_Y_L_M)
+        raw_mag[2] = (self.read_reg_mag(self.OUT_Z_H_M) << 8) | self.read_reg_mag(self.OUT_Z_L_M)
 
         # 2's compiment
         for i in range(3):
