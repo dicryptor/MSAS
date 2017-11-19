@@ -48,7 +48,7 @@ class LSM303(object):
         self._accel = i2c.get_i2c_device(accel_address, **kwargs)
         # self._mag = i2c.get_i2c_device(mag_address, **kwargs)
         # Enable the accelerometer
-        self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG1_A, 0x27)
+        self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG1_A, 0x57)
         # Select hi-res (12-bit) or low-res (10-bit) output mode.
         # Low-res mode uses less power and sustains a higher update rate,
         # output is padded to compatible 12-bit units.

@@ -169,6 +169,7 @@ class lsm303d:
         raw_accel[0] = ((self.read_reg(self.OUT_X_H_A) << 8) | self.read_reg(self.OUT_X_L_A))
         raw_accel[1] = ((self.read_reg(self.OUT_Y_H_A) << 8) | self.read_reg(self.OUT_Y_L_A))
         raw_accel[2] = ((self.read_reg(self.OUT_Z_H_A) << 8) | self.read_reg(self.OUT_Z_L_A))
+        print("Raw from sensor", raw_accel)
 
         # 2's compiment
         for i in range(3):
