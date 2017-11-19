@@ -98,9 +98,9 @@ class LSM303DLHC:
     def __init__(self, address_accel=0x19, address_mag=0x1E, debug=False):
         # self.i2c_accel = Adafruit_I2C(address_accel, smbus.SMBus(1), debug)
         # self.i2c_mag = Adafruit_I2C(address_mag, smbus.SMBus(1), debug)
-        self.i2c_accel = I2C.get_i2c_device(address_accel, smbus.SMBus(1), debug)
+        self.i2c_accel = I2C.get_i2c_device(address_accel, busnum=1)
         # self._accel = i2c.get_i2c_device(accel_address, **kwargs)
-        self.i2c_mag = I2C.get_i2c_device(address_mag, smbus.SMBus(1), debug)
+        self.i2c_mag = I2C.get_i2c_device(address_mag, busnum=1)
 
         self.address_accel = address_accel
         self.address_mag = address_mag
