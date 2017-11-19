@@ -125,15 +125,24 @@ class lsm303d:
 
     # Set up the sensor
     def __init__(self, ):
-        self.write_reg_accel(self.CTRL_REG1, 0x57)  # 0x57 = b01010111, 50hz, continuous update, all accel axes on
-        self.write_reg_accel(self.CTRL_REG2, 0x00)  # set full-scale
-        #  self.write_reg_accel((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
-        self.write_reg_accel(self.CTRL_REG3, 0x00)  # no interrupt
-        self.write_reg_accel(self.CTRL_REG4, 0x00)  # no interrupt
+        self.write_reg_accel(0x57, self.CTRL_REG1)  # 0x57 = ODR=50hz, all accel axes on
+        self.write_reg_accel((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
+        self.write_reg_accel(0x00, self.CTRL_REG3)  # no interrupt
+        self.write_reg_accel(0x00, self.CTRL_REG4)  # no interrupt
         self.write_reg_mag((4 << 2), self.CTRL_REG5)  # 0x10 = mag 50Hz output rate
         self.write_reg_mag(self.MAG_SCALE_2, self.CTRL_REG6)  # magnetic scale = +/-1.3Gauss
-        self.write_reg_mag(0x00, self.CTRL_REG7)  # 0x00 = continuous conversion mode
+        self.write_reg_mag(0x00, self.CTRL_REG7)  # 0x00 = continouous conversion mode
         time.sleep(.005)
+
+        # self.write_reg_accel(self.CTRL_REG1, 0x57)  # 0x57 = b01010111, 50hz, continuous update, all accel axes on
+        # self.write_reg_accel(self.CTRL_REG2, 0x00)  # set full-scale
+        # #  self.write_reg_accel((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
+        # self.write_reg_accel(self.CTRL_REG3, 0x00)  # no interrupt
+        # self.write_reg_accel(self.CTRL_REG4, 0x00)  # no interrupt
+        # self.write_reg_mag((4 << 2), self.CTRL_REG5)  # 0x10 = mag 50Hz output rate
+        # self.write_reg_mag(self.MAG_SCALE_2, self.CTRL_REG6)  # magnetic scale = +/-1.3Gauss
+        # self.write_reg_mag(0x00, self.CTRL_REG7)  # 0x00 = continuous conversion mode
+        # time.sleep(.005)
 
     # get the status of the sensor
     def status(self):
@@ -143,7 +152,7 @@ class lsm303d:
 
     # Write data to a reg on the I2C device
     def write_reg_accel(self, data, reg):
-        bus.write_byte_data(self.LSM303D_ADDR_ACCEL, reg, data)
+        bus.write_byte_data(self.LSM303D_ADDR_ACCEL, data, reg)
 
     # Read data from the sensor
     def read_reg(self, reg):
@@ -151,7 +160,7 @@ class lsm303d:
 
     # Write data to a reg on the I2C device
     def write_reg_mag(self, data, reg):
-        bus.write_byte_data(self.LSM303D_ADDRESS_MAG, reg, data)
+        bus.write_byte_data(self.LSM303D_ADDRESS_MAG, data, reg)
 
     # Read data from the sensor
     def read_reg_mag(self, reg):
