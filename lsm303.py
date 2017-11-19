@@ -86,7 +86,7 @@ class LSM303(object):
         realAccel = [0.0, 0.0, 0.0]
         accel = self.read()
         for i in range(3):
-            realAccel[i] = round(accel[i] / math.pow(2, 15) * ACCEL_SCALE, 3)
+            realAccel[i] = round(accel[i] * 0.001, 3)
         return realAccel
 
 
