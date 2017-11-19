@@ -57,7 +57,7 @@ class LSM303(object):
         # output is padded to compatible 12-bit units.
         if hires:
             # self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00111000)
-            self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00011000)
+            self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00011000) # current scaling is 4g
         else:
             self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0)
             # Enable the magnetometer
