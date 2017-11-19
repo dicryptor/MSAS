@@ -238,8 +238,9 @@ class lsm303d:
 if __name__ == "__main__":
     acc_mag = lsm303d()
     while True:
-        print(acc_mag.getRealAccel())
-
+        #print(acc_mag.getRealAccel())
+        acc_x, acc_y, acc_z = acc_mag.getRealAccel()
+        print("Accel X:{:>6.3f}G,       Y:{:>6.3f}G,      Z: {:>6.3f}G".format(acc_x, acc_y, acc_z))
         while True:
             if acc_mag.isMagReady():
                 break
