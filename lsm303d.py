@@ -117,7 +117,7 @@ class lsm303d:
     MAG_SCALE_8 = 0x40  # +/-8Gauss
     MAG_SCALE_12 = 0x60  # +/-12Gauss
 
-    ACCELE_SCALE = 2
+    ACCEL_SCALE = 2
 
     X = 0
     Y = 1
@@ -125,10 +125,10 @@ class lsm303d:
 
     # Set up the sensor
     def __init__(self, ):
-        self.write_reg_acccel(0x57, self.CTRL_REG1)  # 0x57 = ODR=50hz, all accel axes on
-        self.write_reg_acccel((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
-        self.write_reg_acccel(0x00, self.CTRL_REG3)  # no interrupt
-        self.write_reg_acccel(0x00, self.CTRL_REG4)  # no interrupt
+        self.write_reg_accel(0x57, self.CTRL_REG1)  # 0x57 = ODR=50hz, all accel axes on
+        self.write_reg_accel((3 << 6) | (0 << 3), self.CTRL_REG2)  # set full-scale
+        self.write_reg_accel(0x00, self.CTRL_REG3)  # no interrupt
+        self.write_reg_accel(0x00, self.CTRL_REG4)  # no interrupt
         self.write_reg_mag((4 << 2), self.CTRL_REG5)  # 0x10 = mag 50Hz output rate
         self.write_reg_mag(self.MAG_SCALE_2, self.CTRL_REG6)  # magnetic scale = +/-1.3Gauss
         self.write_reg_mag(0x00, self.CTRL_REG7)  # 0x00 = continuous conversion mode
@@ -141,8 +141,8 @@ class lsm303d:
         return 1
 
     # Write data to a reg on the I2C device
-    def write_reg_acccel(self, data, reg):
-        bus.write_byte_data(self.LSM303D_ADDR_ACCEL, reg, data)
+    def write_reg_accel(self, data, reg):
+        bus.write_byte_data(self.LSM303D_ADDR_ACCEL, data, reg)
 
     # Read data from the sensor
     def read_reg(self, reg):
@@ -150,7 +150,7 @@ class lsm303d:
 
     # Write data to a reg on the I2C device
     def write_reg_mag(self, data, reg):
-        bus.write_byte_data(self.LSM303D_ADDRESS_MAG, reg, data)
+        bus.write_byte_data(self.LSM303D_ADDRESS_MAG, data, reg)
 
     # Read data from the sensor
     def read_reg_mag(self, reg):
@@ -181,7 +181,7 @@ class lsm303d:
         realAccel = [0.0, 0.0, 0.0]
         accel = self.getAccel()
         for i in range(3):
-            realAccel[i] = round(accel[i] / math.pow(2, 15) * self.ACCELE_SCALE, 3)
+            realAccel[i] = round(accel[i] / math.pow(2, 15) * self.ACCEL_SCALE, 3)
         return realAccel
 
     # Get compass raw values
