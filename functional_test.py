@@ -95,6 +95,7 @@ class TipOverTest(unittest.TestCase):
     def test_get_x_axis(self):
         self.assertTrue(-)
 
+#TODO add lsm303 functional test case
 
 if __name__ == "__main__":
     unittest.main(warnings='ignore')
