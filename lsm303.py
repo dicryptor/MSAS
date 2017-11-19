@@ -69,10 +69,15 @@ class LSM303(object):
         accel_raw = self._accel.readList(LSM303_REGISTER_ACCEL_OUT_X_L_A | 0x80, 6)
         accel = struct.unpack('<hhh', accel_raw)
         # Convert to 12-bit values by shifting unused bits.
-        accel = (accel[0] >> 4, accel[1] >> 4, accel[2] >> 4)
+        accel = [accel[0] >> 4, accel[1] >> 4, accel[2] >> 4]
         # Read the magnetometer.
         # mag_raw = self._mag.readList(LSM303_REGISTER_MAG_OUT_X_H_M, 6)
         # mag = struct.unpack('>hhh', mag_raw)
+
+        for i in range(3):
+            if accel[i] > 32767:
+                accel[i] = accel[i] - 65536
+
         return accel
 
 
