@@ -108,17 +108,19 @@ class LSM303(object):
 
         acc_x2 = math.sq
 
-    def get_filteredData(self):
+    def get_filteredData(self, accel):
         """ return filtered data"""
         # TODO write simple filter for sensor data, something not cpu intensive
-        pass
+        filteredAccel = []
+
+        filteredAccel[0] = accel[0] * 1
 
 
     def getRealAccel(self):
         realAccel = [0.0, 0.0, 0.0]
         accel = self.read()
         for i in range(3):
-            realAccel[i] = round(accel[i] * 0.002, 3)
+            realAccel[i] = round(accel[i] * 0.002, 3) # scaling multiplier at +-4g
         return realAccel
 
 
@@ -127,7 +129,7 @@ if __name__ == "__main__":
     while True:
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
-        angle = math.atan2(acc_x, acc_z) * 180 / math.pi
+        angle = math.atan2(acc_x, acc_z) * 180 / math.pi # to calculate the the roll angle, y
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
         print("Angle calculation attempt: {}".format(angle))
