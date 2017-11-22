@@ -108,6 +108,11 @@ class LSM303(object):
 
         acc_x2 = math.sq
 
+    def get_filteredData(self):
+        """ return filtered data"""
+        # TODO write simple filter for sensor data, something not cpu intensive
+        pass
+
 
     def getRealAccel(self):
         realAccel = [0.0, 0.0, 0.0]
