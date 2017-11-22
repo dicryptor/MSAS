@@ -122,7 +122,7 @@ if __name__ == "__main__":
     while True:
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
-        angle = math.atan2(acc_x, -1*acc_z) * (180 / math.pi)
+        angle = math.atan2(acc_x, acc_z) * 180 / math.pi
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
         print("Angle calculation attempt: {}".format(angle))
