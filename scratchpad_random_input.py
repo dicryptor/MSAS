@@ -16,7 +16,7 @@ def low_pass_test(input_list, output_list=None):
 # print(sample_input)
 output = None
 while True:
-    sample_input = np.random.uniform(low=0.0, high=5.5, size=(3,))
+    sample_input = np.random.uniform(low=0.0, high=10.0, size=(3,))
     input_list = sample_input.tolist()
     # print(type(input_list))
 
