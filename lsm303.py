@@ -39,7 +39,7 @@ ACCEL_SCALE = 2
 class LSM303(object):
     """LSM303 accelerometer & magnetometer."""
 
-    ALPHA = 0.8 # used for low-pass filter
+    ALPHA = 0.1 # used for low-pass filter
     deg_sym = u'\u00b0'
 
     def __init__(self, hires=True, accel_address=LSM303_ADDRESS_ACCEL, i2c=None, **kwargs):
