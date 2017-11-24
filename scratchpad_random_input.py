@@ -3,6 +3,7 @@ import time
 
 
 ALPHA = 0.5
+deg_sym = u'\u00b0'
 
 def low_pass_test(input_list, output_list=None):
     if not output_list: return input_list
@@ -22,8 +23,7 @@ while True:
 
     if output == None:
         output = low_pass_test(input_list)
-    else:
         output = low_pass_test(input_list, output)
 
-    print("Input vals: {:>1.6f} {:>1.6f} {:>1.6f} | Output vals: {:>1.6f} {:>1.6f} {:>1.6f}".format(*input_list, *output))
+    print("Input vals: {:>1.6f} {:>1.6f} {:>1.6f} | Output vals: {:>1.6f} {:>1.6f} {:>1.6f} {}".format(*input_list, *output, deg_sym))
     time.sleep(0.5)
