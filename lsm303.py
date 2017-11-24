@@ -39,6 +39,8 @@ ACCEL_SCALE = 2
 class LSM303(object):
     """LSM303 accelerometer & magnetometer."""
 
+    ALPHA = 0.5 # used for low-pass filter
+
     def __init__(self, hires=True, accel_address=LSM303_ADDRESS_ACCEL, i2c=None, **kwargs):
         """Initialize the LSM303 accelerometer & magnetometer.  The hires
         boolean indicates if high resolution (12-bit) mode vs. low resolution
@@ -105,15 +107,15 @@ class LSM303(object):
     def get_angle(self, accel):
         """ Calculate the tilt angle """
         acc_x, acc_y, acc_z = accel
+        angle = math.atan2(acc_x, acc_z) * 180 / math.pi  # to calculate the the roll angle, y
+        return angle
 
-        acc_x2 = math.sq
 
-    def get_filteredData(self, accel):
-        """ return filtered data"""
-        # TODO write simple filter for sensor data, something not cpu intensive
-        filteredAccel = []
+    def low_pass_filter(self, input, output=None):
+        if not output: return input
 
-        filteredAccel[0] = accel[0] * 1
+        output_filtered = output + ALPHA * (input - output)
+        return output_filtered
 
 
     def getRealAccel(self):
@@ -129,7 +131,8 @@ if __name__ == "__main__":
     while True:
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
-        angle = math.atan2(acc_x, acc_z) * 180 / math.pi # to calculate the the roll angle, y
+        angle = lsm303.get_angle(accel)
+        # angle = math.atan2(acc_x, acc_z) * 180 / math.pi # to calculate the the roll angle, y
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
         print("Angle calculation attempt: {}".format(angle))
