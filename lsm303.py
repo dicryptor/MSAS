@@ -39,7 +39,7 @@ ACCEL_SCALE = 2
 class LSM303(object):
     """LSM303 accelerometer & magnetometer."""
 
-    ALPHA = 0.5 # used for low-pass filter
+    ALPHA = 0.8 # used for low-pass filter
     deg_sym = u'\u00b0'
 
     def __init__(self, hires=True, accel_address=LSM303_ADDRESS_ACCEL, i2c=None, **kwargs):
@@ -135,5 +135,5 @@ if __name__ == "__main__":
         angle = lsm303.get_angle(accel)
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
-        print("Angle calculation attempt: {:>6.6f} {}".format(angle, lsm303.deg_sym))
+        print("Tilt angle: {:>6.6f}{}".format(angle, lsm303.deg_sym))
         time.sleep(0.2)
