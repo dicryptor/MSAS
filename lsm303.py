@@ -132,8 +132,7 @@ if __name__ == "__main__":
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
         angle = lsm303.get_angle(accel)
-        # angle = math.atan2(acc_x, acc_z) * 180 / math.pi # to calculate the the roll angle, y
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
-        print("Angle calculation attempt: {}".format(angle))
+        print("Angle calculation attempt: {:>6.6f}".format(angle))
         time.sleep(0.2)
