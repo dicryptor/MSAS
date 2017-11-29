@@ -75,25 +75,6 @@ class LSM303(object):
             # Enable the magnetometer
             # self._mag.write8(LSM303_REGISTER_MAG_MR_REG_M, 0x00)
 
-    # TODO scaling factor works but needs to be incorporated properly for easy chage
-    # def setAccelerometerScale(self, scale):
-    #     "Sets the accelerometer measurement scale"
-    #     if scale == 2:
-    #         self.accelScale = 0b00
-    #         self.accelFactor = 0.001
-    #     elif scale == 4:
-    #         self.accelScale = 0b01
-    #         self.accelFactor = 0.002
-    #     elif scale == 8:
-    #         self.accelScale = 0b10
-    #         self.accelFactor = 0.004
-    #     elif scale == 16:
-    #         self.accelScale = 0b11
-    #         self.accelFactor = 0.012
-    #     else:
-    #         print("setAccelerometerScale takes values 2, 4, 8 or 16 only")
-    #     self.__setCtrlReg4A()
-
     def read(self):
         """Read the accelerometer and magnetometer value.  A tuple of tuples will
         be returned with:
@@ -124,7 +105,7 @@ class LSM303(object):
     def low_pass_filter(self, input, output=None):
         if not output: return input
 
-        output_filtered = output + ALPHA * (input - output)
+        output_filtered = output + self.ALPHA * (input - output)
         return output_filtered
 
 
@@ -132,8 +113,42 @@ class LSM303(object):
         realAccel = [0.0, 0.0, 0.0]
         accel = self.read()
         for i in range(3):
-            realAccel[i] = round(accel[i] * self.scale_factor, 3) # scaling multiplier at +-4g
+            realAccel[i] = round(accel[i] * self.scale_factor, 3)
         return realAccel
+
+
+class MovingAverage():
+    def __init__(self, period):
+        """
+        construct, set the period
+        """
+        assert period == int(period) and period > 0, "Period must be an integer >0"
+        self.period = period
+        self.stream = deque()    # store the data here
+        self.stream.clear()
+
+    # ---------------------------------------------
+    def nextVal(self, n):
+        """
+        add a value to moving average and return a smoothed value
+        filling the stream still leaves some issues -- but looks
+        like the right way to me
+        may be issues on where float() is used
+        """
+        stream = self.stream
+
+        stream.append(n)    # appends on the right
+
+        streamlength = len(stream)
+        if streamlength > self.period:
+            stream.popleft()
+            streamlength -= 1
+        if streamlength == 0:
+            self.value    =  0
+        else:
+            self.value    = sum( stream ) / float( streamlength )
+
+        return self.value
 
 
 if __name__ == "__main__":
@@ -142,6 +157,11 @@ if __name__ == "__main__":
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
         angle = lsm303.get_angle(accel)
+        angle_filtered = None
+        if angle_filtered == None:
+            angle_filtered = lsm303.low_pass_filter(angle)
+        else:
+            angle_filtered = lsm303.low_pass_filter(angle, angle_filtered)
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
         print("Tilt angle: {:>6.6f}{}".format(angle, lsm303.deg_sym))
