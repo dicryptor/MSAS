@@ -164,5 +164,5 @@ if __name__ == "__main__":
             angle_filtered = lsm303.low_pass_filter(angle, angle_filtered)
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
-        print("Tilt angle: {:>6.6f}{}".format(angle, lsm303.deg_sym))
+        print("Tilt angle: {:>6.6f}{}. Filtered: {}".format(angle, lsm303.deg_sym, angle_filtered))
         time.sleep(0.2)
