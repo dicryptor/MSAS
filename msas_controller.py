@@ -68,7 +68,7 @@ try:
                 print("{} Bike has fallen over. Do you need assistance?".format(dt.now().isoformat()))
                 accel = lsm303.getRealAccel()
                 lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
-                if -45 >= lsm303.angle_filtered <= 45:
+                if -45 <= lsm303.angle_filtered <= 45:
                     vehicle_ok = True
 except KeyboardInterrupt:
     led_notification.cleanUp()
