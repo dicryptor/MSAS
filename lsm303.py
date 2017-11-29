@@ -154,7 +154,7 @@ class MovingAverage():
 
 if __name__ == "__main__":
     lsm303 = LSM303(scale=16) # set scale to +-16G
-    angle_filtered = None # int angle variable
+    angle_filtered = None # init angle variable
     sma = MovingAverage(5) # test moving average filter
     past_accel = [] # init empty list to store previous sensor values
     while True:
@@ -169,9 +169,9 @@ if __name__ == "__main__":
         else: # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
             angle = lsm303.get_angle(accel)
             if angle_filtered == None:
-                angle_filtered = lsm303.low_pass_filter(angle)
+                angle_filtered = lsm303.low_pass_filter(angle) # low-pass filter
             else:
-                angle_filtered = lsm303.low_pass_filter(angle, angle_filtered)
+                angle_filtered = lsm303.low_pass_filter(angle, angle_filtered) # low-pass filter
                 print("Tilt angle: {:>6.6f}{}. Filtered: {}. Moving Average: {}".format(angle, lsm303.deg_sym,
                                                                                  angle_filtered,
                                                                                  sma.nextVal( float(angle))))
