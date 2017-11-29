@@ -15,6 +15,13 @@ def low_pass_test(input_list, output_list=None):
     return output
 
 
+def low_pass_filter(self, input, output=None):
+    if not output: return input
+
+    output_filtered = output + self.ALPHA * (input - output)
+    return output_filtered
+
+
 # smoothVal = None
 # // affects the curve of movement amount > snap amount
 # // smaller amounts like 0.001 make it ease slower
