@@ -59,10 +59,18 @@ try:
             rightLed.ledOff()
 
         accel = lsm303.getRealAccel()
-        lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
-        print("{} Tilt angle is {}".format(dt.now().isoformat(), lsm303.angle_filtered))
-        if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
-            vehicle_ok = False
+        if not lsm303.past_accel:  # if first time running copy current readings to past readings
+            lsm303.past_accel = accel
+        compare_accel = [abs(i - j) for i, j in zip(accel, lsm303.past_accel)]  # compare current and previous readings
+        if any(i > 1 for i in compare_accel):  # if any value changes more than 1G, we want to know about it
+            acc_x, acc_y, acc_z = accel
+            print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
+            print("Are you involved in an accident? Do you require assistance?")
+        else:  # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
+            lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
+            print("{} Tilt angle is {}".format(dt.now().isoformat(), lsm303.angle_filtered))
+            if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
+                vehicle_ok = False
 
             while vehicle_ok == False:
                 print("{} Bike has fallen over. Do you need assistance?".format(dt.now().isoformat()))
@@ -70,5 +78,6 @@ try:
                 lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
                 if -45 <= lsm303.angle_filtered <= 45:
                     vehicle_ok = True
+                time.sleep(0.2)
 except KeyboardInterrupt:
     led_notification.cleanUp()
