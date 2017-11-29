@@ -36,13 +36,6 @@ vehicle_ok = True
 
 print("Starting detection cycle")
 try:
-    # while vehicle_ok == False:
-    #     print("{} Bike has fallen over. Do you need assistance?".format(dt.now().isoformat()))
-    #     accel = lsm303.getRealAccel()
-    #     lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
-    #     if lsm303.angle_filtered < 45 or lsm303.angle_filtered > -45:
-    #         vehicle_ok = True
-    #     vehicle_ok = True
     while vehicle_ok == True:
         trigger_front()
         time.sleep(0.07)
@@ -70,6 +63,14 @@ try:
         print("{} Tilt angle is {}".format(dt.now().isoformat(), lsm303.angle_filtered))
         if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
             vehicle_ok = False
+
+        while vehicle_ok == False:
+            print("{} Bike has fallen over. Do you need assistance?".format(dt.now().isoformat()))
+            accel = lsm303.getRealAccel()
+            lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
+            if lsm303.angle_filtered < 45 or lsm303.angle_filtered > -45:
+                vehicle_ok = True
+            vehicle_ok = True
 
 except KeyboardInterrupt:
     led_notification.cleanUp()
