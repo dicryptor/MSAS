@@ -153,20 +153,27 @@ class MovingAverage():
 
 
 if __name__ == "__main__":
-    lsm303 = LSM303(scale=16)
-    angle_filtered = None
-    sma = MovingAverage(5)
+    lsm303 = LSM303(scale=16) # set scale to +-16G
+    angle_filtered = None # int angle variable
+    sma = MovingAverage(5) # test moving average filter
+    past_accel = [] # init empty list to store previous sensor values
     while True:
-        accel = lsm303.getRealAccel()
-        acc_x, acc_y, acc_z = accel
-        angle = lsm303.get_angle(accel)
-        if angle_filtered == None:
-            angle_filtered = lsm303.low_pass_filter(angle)
-        else:
-            angle_filtered = lsm303.low_pass_filter(angle, angle_filtered)
         now = dt.now().isoformat()
-        print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
-        print("Tilt angle: {:>6.6f}{}. Filtered: {}. Moving Average: {}".format(angle, lsm303.deg_sym,
+        accel = lsm303.getRealAccel()
+        if not past_accel: # if first time running copy current readings to past readings
+            past_accel = accel
+        compare_accel = [abs(i-j) for i,j in zip(accel, past_accel)] # compare current and previous readings
+        if any(i>i for i in compare_accel): # if any value changes more than 1G, we want to know about it
+            acc_x, acc_y, acc_z = accel
+            print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
+        else: # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
+            angle = lsm303.get_angle(accel)
+            if angle_filtered == None:
+                angle_filtered = lsm303.low_pass_filter(angle)
+            else:
+                angle_filtered = lsm303.low_pass_filter(angle, angle_filtered)
+                print("Tilt angle: {:>6.6f}{}. Filtered: {}. Moving Average: {}".format(angle, lsm303.deg_sym,
                                                                                  angle_filtered,
                                                                                  sma.nextVal( float(angle))))
         time.sleep(0.2)
+        past_accel = accel
