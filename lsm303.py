@@ -154,6 +154,7 @@ class MovingAverage():
 if __name__ == "__main__":
     lsm303 = LSM303(scale=16)
     angle_filtered = None
+    sma = MovingAverage(5)
     while True:
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
@@ -164,5 +165,7 @@ if __name__ == "__main__":
             angle_filtered = lsm303.low_pass_filter(angle, angle_filtered)
         now = dt.now().isoformat()
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
-        print("Tilt angle: {:>6.6f}{}. Filtered: {}".format(angle, lsm303.deg_sym, angle_filtered))
+        print("Tilt angle: {:>6.6f}{}. Filtered: {}. Moving Average: {}".format(angle, lsm303.deg_sym,
+                                                                                 angle_filtered,
+                                                                                 sma.nextVal( float(angle))))
         time.sleep(0.2)
