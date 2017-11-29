@@ -171,7 +171,7 @@ if __name__ == "__main__":
             if angle_filtered == None:
                 angle_filtered = lsm303.low_pass_filter(angle) # low-pass filter
             else:
-                angle_filtered = lsm303.low_pass_filter(angle, angle_filtered) # low-pass filter
+                angle_filtered = lsm303.low_pass_filter(angle, angle_filtered) # low-pass filter test
                 print("Tilt angle: {:>6.6f}{}. Filtered: {}. Moving Average: {}".format(angle, lsm303.deg_sym,
                                                                                  angle_filtered,
                                                                                  sma.nextVal( float(angle))))
