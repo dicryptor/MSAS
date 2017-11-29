@@ -175,6 +175,7 @@ if __name__ == "__main__":
                 print("Tilt angle: {:>6.6f}{}. Filtered: {}. Moving Average: {}".format(angle, lsm303.deg_sym,
                                                                                  angle_filtered,
                                                                                  sma.nextVal( float(angle))))
+        acc_x, acc_y, acc_z = accel
         print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
         time.sleep(0.2)
         past_accel = accel
