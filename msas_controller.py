@@ -3,6 +3,7 @@ import time
 from datetime import datetime as dt
 import blindspot
 import led_notification
+import lsm303
 
 ## Threshold for blindspot detection
 DETECT = 50
@@ -13,6 +14,7 @@ left_front = blindspot.USensor(0x71)
 right_front = blindspot.USensor(0x70)
 left_back = blindspot.USensor(0x72)
 right_back = blindspot.USensor(0x73)
+lsm303 = lsm303.LSM303(scale=16)
 
 print("Initializing notification LEDs..")
 leftLed = led_notification.LED(LEFT_LED)
@@ -30,29 +32,34 @@ def trigger_back():
 
 
 vals = [0, 0, 0, 0]
+vehicle_ok = True
+
 print("Starting detection cycle")
 try:
-    while True:
-        trigger_front()
-        time.sleep(0.07)
-        vals[0] = left_front.rread()
-        vals[1] = right_front.rread()
-        trigger_back()
-        time.sleep(0.07)
-        vals[2] = left_back.rread()
-        vals[3] = right_back.rread()
+    while vehicle_ok == False:
+        lsm303.
+        vehicle_ok = True
+        while vehicle_ok == True:
+            trigger_front()
+            time.sleep(0.07)
+            vals[0] = left_front.rread()
+            vals[1] = right_front.rread()
+            trigger_back()
+            time.sleep(0.07)
+            vals[2] = left_back.rread()
+            vals[3] = right_back.rread()
 
-        print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(), *vals))
+            print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(), *vals))
 
-        if vals[0] > DETECT and vals[2] < DETECT:
-            leftLed.ledOn()
-        else:
-            leftLed.ledOff()
+            if vals[0] > DETECT and vals[2] < DETECT:
+                leftLed.ledOn()
+            else:
+                leftLed.ledOff()
 
-        if vals[1] > DETECT and vals[3] < DETECT:
-            rightLed.ledOn()
-        else:
-            rightLed.ledOff()
+            if vals[1] > DETECT and vals[3] < DETECT:
+                rightLed.ledOn()
+            else:
+                rightLed.ledOff()
 
 except KeyboardInterrupt:
     led_notification.cleanUp()
