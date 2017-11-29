@@ -162,6 +162,7 @@ if __name__ == "__main__":
         accel = lsm303.getRealAccel()
         if not past_accel: # if first time running copy current readings to past readings
             past_accel = accel
+
         compare_accel = [abs(i-j) for i,j in zip(accel, past_accel)] # compare current and previous readings
         if any(i>1 for i in compare_accel): # if any value changes more than 1G, we want to know about it
             acc_x, acc_y, acc_z = accel
@@ -173,9 +174,10 @@ if __name__ == "__main__":
                 angle_filtered = sma.nextVal(float(angle))
             else:
                 angle_filtered = lsm303.low_pass_filter(angle, angle_filtered) # low-pass filter test
-                print("Tilt angle, Moving Average: {:>6.3f}".format(angle_filtered, lsm303.deg_sym))
-        #acc_x, acc_y, acc_z = accel
-        #print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
+                # print("Tilt angle, Moving Average: {:>6.3f}".format(angle_filtered, lsm303.deg_sym))
+            if angle_filtered > 45:
+                print("Bike has fallen over. Do you need assistance?")
+
         time.sleep(0.5)
         past_accel = accel
 
