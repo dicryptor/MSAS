@@ -153,7 +153,7 @@ class MovingAverage():
 
 
 if __name__ == "__main__":
-    lsm303 = LSM303(scale=16) # set scale to +-16G
+    lsm303 = LSM303(scale=2) # set scale to +-16G
     angle_filtered = None # init angle variable
     sma = MovingAverage(5) # test moving average filter
     past_accel = [] # init empty list to store previous sensor values
