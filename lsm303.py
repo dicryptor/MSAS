@@ -163,7 +163,7 @@ if __name__ == "__main__":
         else: # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
             lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
             if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
-                print("Bike has fallen over. Do you need assistance?")
+                print("{}: Bike has fallen over. Do you need assistance?".format(now))
 
         time.sleep(0.2)
         lsm303.past_accel = accel
