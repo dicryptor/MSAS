@@ -153,11 +153,11 @@ class MovingAverage():
 
 if __name__ == "__main__":
     lsm303 = LSM303(scale=16)
+    angle_filtered = None
     while True:
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
         angle = lsm303.get_angle(accel)
-        angle_filtered = None
         if angle_filtered == None:
             angle_filtered = lsm303.low_pass_filter(angle)
         else:
