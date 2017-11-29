@@ -42,7 +42,7 @@ class LSM303(object):
     ALPHA = 0.8 # used for low-pass filter
     deg_sym = u'\u00b0'
 
-    def __init__(self, hires=True, accel_address=LSM303_ADDRESS_ACCEL, i2c=None, **kwargs):
+    def __init__(self, hires=True, accel_address=LSM303_ADDRESS_ACCEL, i2c=None, scale=2, **kwargs):
         """Initialize the LSM303 accelerometer & magnetometer.  The hires
         boolean indicates if high resolution (12-bit) mode vs. low resolution
         (10-bit, faster and lower power) mode should be used.
@@ -59,8 +59,17 @@ class LSM303(object):
         # Low-res mode uses less power and sustains a higher update rate,
         # output is padded to compatible 12-bit units.
         if hires:
-            # self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00111000)
-            self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00011000) # current scaling is 4g
+            self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00001000) # default scale of 2g
+            self.scale_factor = 0.001
+            if scale == 4:
+                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00011000) # current scaling is 4g
+                self.scale_factor = 0.002
+            elif scale == 8:
+                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00101000)  # current scaling is 4g
+                self.scale_factor = 0.004
+            elif scale == 16:
+                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00111000)  # current scaling is 4g
+                self.scale_factor = 0.012
         else:
             self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0)
             # Enable the magnetometer
