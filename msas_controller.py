@@ -70,7 +70,5 @@ try:
                 lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
                 if lsm303.angle_filtered < 45 or lsm303.angle_filtered > -45:
                     vehicle_ok = True
-                vehicle_ok = True
-
 except KeyboardInterrupt:
     led_notification.cleanUp()
