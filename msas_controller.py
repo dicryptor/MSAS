@@ -64,7 +64,7 @@ try:
         compare_accel = [abs(i - j) for i, j in zip(accel, lsm303.past_accel)]  # compare current and previous readings
         if any(i > 1 for i in compare_accel):  # if any value changes more than 1G, we want to know about it
             acc_x, acc_y, acc_z = accel
-            print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
+            print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(dt.now().isoformat(), acc_x, acc_y, acc_z))
             print("Are you involved in an accident? Do you require assistance?")
         else:  # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
             lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
