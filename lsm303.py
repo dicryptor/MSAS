@@ -63,13 +63,13 @@ class LSM303(object):
             self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00001000) # default scale of 2g
             self.scale_factor = 0.001
             if scale == 4:
-                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00011000) # current scaling is 4g
+                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00011000) # scaling of 4g
                 self.scale_factor = 0.002
             elif scale == 8:
-                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00101000)  # current scaling is 4g
+                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00101000)  # scaling of 8g
                 self.scale_factor = 0.004
             elif scale == 16:
-                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00111000)  # current scaling is 4g
+                self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0b00111000)  # scaling of 16g
                 self.scale_factor = 0.012
         else:
             self._accel.write8(LSM303_REGISTER_ACCEL_CTRL_REG4_A, 0)
@@ -178,6 +178,6 @@ if __name__ == "__main__":
             if angle_filtered > 45 or angle_filtered < -45:
                 print("Bike has fallen over. Do you need assistance?")
 
-        time.sleep(0.5)
+        time.sleep(0.2)
         past_accel = accel
 
