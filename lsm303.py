@@ -76,6 +76,7 @@ class LSM303(object):
 
         self.sma = MovingAverage(5)
         self.angle_filtered = None
+        self.past_accel = None
 
     def read(self):
         """Read the accelerometer and magnetometer value.  A tuple of tuples will
@@ -102,13 +103,6 @@ class LSM303(object):
         acc_x, acc_y, acc_z = accel
         angle = math.atan2(acc_x, acc_z) * 180 / math.pi  # to calculate the the roll angle, y
         return angle
-
-
-    def low_pass_filter(self, input, output=None):
-        if not output: return input
-
-        output_filtered = output + self.ALPHA * (input - output)
-        return output_filtered
 
 
     def getRealAccel(self):
@@ -155,31 +149,22 @@ class MovingAverage():
 
 if __name__ == "__main__":
     lsm303 = LSM303(scale=16) # set scale to +-16G
-    # angle_filtered = None # init angle variable
-    # sma = MovingAverage(5) # test moving average filter
-    past_accel = [] # init empty list to store previous sensor values
+    # past_accel = [] # init empty list to store previous sensor values
     while True:
         now = dt.now().isoformat()
         accel = lsm303.getRealAccel()
-        if not past_accel: # if first time running copy current readings to past readings
-            past_accel = accel
+        if not lsm303.past_accel: # if first time running copy current readings to past readings
+            lsm303.past_accel = accel
 
-        compare_accel = [abs(i-j) for i,j in zip(accel, past_accel)] # compare current and previous readings
+        compare_accel = [abs(i-j) for i,j in zip(accel, lsm303.past_accel)] # compare current and previous readings
         if any(i>1 for i in compare_accel): # if any value changes more than 1G, we want to know about it
             acc_x, acc_y, acc_z = accel
             print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(now, acc_x, acc_y, acc_z))
         else: # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
-            # angle = lsm303.get_angle(accel)
-            # if lsm303.angle_filtered == None:
-            #     # angle_filtered = lsm303.low_pass_filter(angle) # low-pass filter
-            #     lsm303.angle_filtered = lsm303.sma.nextVal(float(angle))
-            # else:
-            #     lsm303.angle_filtered = lsm303.sma.nextVal(float(angle)) # low-pass filter test
-            #     # print("Tilt angle, Moving Average: {:>6.3f}".format(angle_filtered, lsm303.deg_sym))
             lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
             if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
                 print("Bike has fallen over. Do you need assistance?")
 
         time.sleep(0.2)
-        past_accel = accel
+        lsm303.past_accel = accel
 
