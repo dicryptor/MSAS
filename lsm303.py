@@ -21,6 +21,7 @@
 # SOFTWARE.
 import struct, time, math
 from datetime import datetime as dt
+from collections import deque
 
 # Minimal constants carried over from Arduino library:
 LSM303_ADDRESS_ACCEL = (0x32 >> 1)  # 0011001x
