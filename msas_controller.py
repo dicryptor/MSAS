@@ -69,7 +69,7 @@ try:
             time.sleep(10)
         else:  # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
             lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
-            print("{} Tilt angle is {}".format(dt.now().isoformat(), lsm303.angle_filtered))
+            print("{} Tilt angle is {:>3.3f} {}".format(dt.now().isoformat(), lsm303.angle_filtered, lsm303.deg_sym))
             if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
                 vehicle_ok = False
 
