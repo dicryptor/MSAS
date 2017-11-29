@@ -36,40 +36,40 @@ vehicle_ok = True
 
 print("Starting detection cycle")
 try:
-    while vehicle_ok == False:
-        print("{} Bike has fallen over. Do you need assistance?".format(dt.now().isoformat()))
+    # while vehicle_ok == False:
+    #     print("{} Bike has fallen over. Do you need assistance?".format(dt.now().isoformat()))
+    #     accel = lsm303.getRealAccel()
+    #     lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
+    #     if lsm303.angle_filtered < 45 or lsm303.angle_filtered > -45:
+    #         vehicle_ok = True
+    #     vehicle_ok = True
+    while vehicle_ok == True:
+        trigger_front()
+        time.sleep(0.07)
+        vals[0] = left_front.rread()
+        vals[1] = right_front.rread()
+        trigger_back()
+        time.sleep(0.07)
+        vals[2] = left_back.rread()
+        vals[3] = right_back.rread()
+
+        print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(), *vals))
+
+        if vals[0] > DETECT and vals[2] < DETECT:
+            leftLed.ledOn()
+        else:
+            leftLed.ledOff()
+
+        if vals[1] > DETECT and vals[3] < DETECT:
+            rightLed.ledOn()
+        else:
+            rightLed.ledOff()
+
         accel = lsm303.getRealAccel()
         lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
-        if lsm303.angle_filtered < 45 or lsm303.angle_filtered > -45:
-            vehicle_ok = True
-        vehicle_ok = True
-        while vehicle_ok == True:
-            trigger_front()
-            time.sleep(0.07)
-            vals[0] = left_front.rread()
-            vals[1] = right_front.rread()
-            trigger_back()
-            time.sleep(0.07)
-            vals[2] = left_back.rread()
-            vals[3] = right_back.rread()
-
-            print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(), *vals))
-
-            if vals[0] > DETECT and vals[2] < DETECT:
-                leftLed.ledOn()
-            else:
-                leftLed.ledOff()
-
-            if vals[1] > DETECT and vals[3] < DETECT:
-                rightLed.ledOn()
-            else:
-                rightLed.ledOff()
-
-            accel = lsm303.getRealAccel()
-            lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
-            print("{} Tilt angle is {}".format(dt.now().isoformat(), lsm303.angle_filtered))
-            if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
-                vehicle_ok = False
+        print("{} Tilt angle is {}".format(dt.now().isoformat(), lsm303.angle_filtered))
+        if lsm303.angle_filtered > 45 or lsm303.angle_filtered < -45:
+            vehicle_ok = False
 
 except KeyboardInterrupt:
     led_notification.cleanUp()
