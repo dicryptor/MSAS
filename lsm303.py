@@ -175,7 +175,7 @@ if __name__ == "__main__":
             else:
                 angle_filtered = lsm303.low_pass_filter(angle, angle_filtered) # low-pass filter test
                 # print("Tilt angle, Moving Average: {:>6.3f}".format(angle_filtered, lsm303.deg_sym))
-            if angle_filtered > 45:
+            if angle_filtered > 45 or angle_filtered < -45:
                 print("Bike has fallen over. Do you need assistance?")
 
         time.sleep(0.5)
