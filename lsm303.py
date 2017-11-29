@@ -137,7 +137,7 @@ class LSM303(object):
 
 
 if __name__ == "__main__":
-    lsm303 = LSM303()
+    lsm303 = LSM303(scale=16)
     while True:
         accel = lsm303.getRealAccel()
         acc_x, acc_y, acc_z = accel
