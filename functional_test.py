@@ -86,16 +86,23 @@ class LedTest(unittest.TestCase):
         time.sleep(1)
 
 
-class TipOverTest(unittest.TestCase):
+class AccelTest(unittest.TestCase):
     def setUp(self):
         self.lsm303 = lsm303.LSM303()
-        self.accel = lsm303.read()
-        self.acc_x, self.acc_y, self.acc_z = accel
+        self.accel = self.lsm303.getRealAccel()
+        self.acc_x, self.acc_y, self.acc_z = self.accel
 
     def test_get_x_axis(self):
-        self.assertTrue(-)
+        self.assertTrue(-2000 <= self.acc_x <= 2000)
 
-#TODO add lsm303 functional test case
+    def test_get_y_axis(self):
+        self.assertTrue(-2000 <= self.acc_y <= 2000)
+
+    def test_get_z_axis(self):
+        self.assertTrue(-2000 <= self.acc_y <= 2000)
+
+
+
 
 if __name__ == "__main__":
     unittest.main(warnings='ignore')
