@@ -102,10 +102,10 @@ class AccelTest(unittest.TestCase):
         self.assertTrue(-2000 <= self.acc_y <= 2000)
 
     def test_moving_average(self):
-        for i in range(40, 51): # feed 10 values which should average out to 45
+        for i in range(40, 51): # feed 10 values which should average out to 48
             self.angle_filtered = self.lsm303.sma.nextVal(i)
 
-        self.assertEqual(self.angle_filtered, 45)
+        self.assertEqual(self.angle_filtered, 48)
 
 
 
