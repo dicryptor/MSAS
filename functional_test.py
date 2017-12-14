@@ -91,6 +91,7 @@ class AccelTest(unittest.TestCase):
         self.lsm303 = lsm303.LSM303()
         self.accel = self.lsm303.getRealAccel()
         self.acc_x, self.acc_y, self.acc_z = self.accel
+        self.angle = self.lsm303.get_angle(self.accel)
 
     def test_get_x_axis(self):
         self.assertTrue(-2000 <= self.acc_x <= 2000)
@@ -100,6 +101,15 @@ class AccelTest(unittest.TestCase):
 
     def test_get_z_axis(self):
         self.assertTrue(-2000 <= self.acc_y <= 2000)
+
+    def test_get_angle(self):
+        self.assertTrue(-180 <= self.acc_y <= 180)
+
+    def test_moving_average(self):
+        for i in range(40, 51): # feed 10 values which should average out to 48
+            self.angle_filtered = self.lsm303.sma.nextVal(i)
+
+        self.assertEqual(self.angle_filtered, 48)
 
 
 
