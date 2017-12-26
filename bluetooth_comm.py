@@ -46,7 +46,7 @@ if __name__ == "__main__":
             while connected == True:
                 try:
                     data = bluetooth.recv_data()
-                    print("Received: {}".format(data))
+                    print("Received: {}".format(data.decode('UTF-8')))
                     if data == "disconnect":
                         print("Client request to disconnect")
                         break
