@@ -9,7 +9,7 @@ class BluetoothComm():
         self.UUID = "f9b4f58d-63ea-4d6e-831b-271a6ad0e5e2"
         try:
             self.server_sock = BluetoothSocket(RFCOMM)
-            self.server_sock.bind("", PORT_ANY)
+            self.server_sock.bind(("", PORT_ANY))
             self.server_sock.listen(1)
             self.port = self.server_sock.getsockname()[1]
             advertise_service(self.server_sock, "MSAS",
