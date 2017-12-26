@@ -57,8 +57,8 @@ if __name__ == "__main__":
                     print("User cancelled operation")
                     connected = False
             client_sock.close()
-            bluetooth.server_sock.close()
     except KeyboardInterrupt:
         print("User cancelled operation")
+        bluetooth.server_sock.close()
 
 
