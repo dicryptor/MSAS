@@ -33,14 +33,29 @@ class BluetoothComm():
                 return "Nothing received from client" + self.client_info
             else:
                 return self.data
-        except:
+        except IOError:
             return "Nothing connected/sending data"
 
 if __name__ == "__main__":
     bluetooth = BluetoothComm()
-    while True:
-        client_sock, client_info = bluetooth.accept_connection()
-        print("Accepted connection from {}".format(client_info))
-        data = bluetooth.recv_data()
-        print("Received: {}".format(data))
+    try:
+        while True:
+            client_sock, client_info = bluetooth.accept_connection()
+            print("Accepted connection from {}".format(client_info))
+            connected = True
+            while connected == True:
+                try:
+                    data = bluetooth.recv_data()
+                    print("Received: {}".format(data))
+                except IOError:
+                    print("IO error detected")
+                    connected = False
+                except KeyboardInterrupt:
+                    print("User cancelled operation")
+                    connected = False
+            client_sock.close()
+            bluetooth.server_sock.close()
+    except KeyboardInterrupt:
+        print("User cancelled operation")
+
 
