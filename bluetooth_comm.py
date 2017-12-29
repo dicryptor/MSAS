@@ -51,7 +51,7 @@ if __name__ == "__main__":
                         print("Client request to disconnect")
                         break
                     else:
-                        reply = "You sent me this: " + data
+                        reply = "You sent me this: {}".format(data.decode('UTF-8'))
                         client_sock.send(reply)
                 except IOError:
                     print("IO error detected")
