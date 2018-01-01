@@ -53,13 +53,14 @@ if __name__ == "__main__":
                     elif data.decode('UTF-8') == "TOAST":
                         time.sleep(1)
                         client_sock.send("TOAST")
-
-
                     else:
                         reply = "You sent me this: {}".format(data.decode('UTF-8'))
                         client_sock.send(reply)
                 except IOError:
                     print("IO error detected")
+                    connected = False
+                except AttributeError as e:
+                    print(e)
                     connected = False
                 except KeyboardInterrupt:
                     print("User cancelled operation")
