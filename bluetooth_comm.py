@@ -55,7 +55,7 @@ if __name__ == "__main__":
                         client_sock.send("COLLISION detected!")
                     elif data.decode('UTF-8') == "TEST FALL":
                         time.sleep(1)
-                        client_sock.send("FALL")
+                        client_sock.send("FALL detected!")
                     else:
                         reply = "You sent me this: {}".format(data.decode('UTF-8'))
                         client_sock.send(reply)
