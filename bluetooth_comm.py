@@ -52,7 +52,7 @@ if __name__ == "__main__":
                         break
                     elif data.decode('UTF-8') == "TEST COLLISION":
                         time.sleep(1)
-                        client_sock.send("COLLISION")
+                        client_sock.send("COLLISION detected!")
                     elif data.decode('UTF-8') == "TEST FALL":
                         time.sleep(1)
                         client_sock.send("FALL")
