@@ -50,6 +50,11 @@ if __name__ == "__main__":
                     if data.decode('UTF-8') == "disconnect":
                         print("Client request to disconnect")
                         break
+                    elif data.decode('UTF-8') == "TOAST":
+                        time.sleep(1)
+                        client_sock.send("TOAST")
+
+
                     else:
                         reply = "You sent me this: {}".format(data.decode('UTF-8'))
                         client_sock.send(reply)
