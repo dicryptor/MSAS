@@ -40,13 +40,25 @@ if __name__ == "__main__":
     bluetooth = BluetoothComm()
     try:
         while True:
-            print("Waiting for connection...")
             client_sock, client_info = bluetooth.accept_connection()
             print("Accepted connection from {}".format(client_info))
             connected = True
             while connected == True:
                 try:
                     data = bluetooth.recv_data()
+                    print("Received: {}".format(data))
+                    if data.decode('UTF-8') == "disconnect":
+                        print("Client request to disconnect")
+                        break
+                    elif data.decode('UTF-8') == "TEST COLLISION":
+                        time.sleep(1)
+                        client_sock.send("COLLISION detected!")
+                    elif data.decode('UTF-8') == "TEST FALL":
+                        time.sleep(1)
+                        client_sock.send("FALL detected!")
+                    else:
+                        reply = "You sent me this: {}".format(data.decode('UTF-8'))
+                        client_sock.send(reply)
                 except IOError:
                     print("IO error detected")
                     connected = False
@@ -56,21 +68,6 @@ if __name__ == "__main__":
                 except KeyboardInterrupt:
                     print("User cancelled operation")
                     connected = False
-
-                print("Received: {}".format(data))
-                if data.decode('UTF-8') == "disconnect":
-                    print("Client request to disconnect")
-                    break
-                elif data.decode('UTF-8') == "TEST COLLISION":
-                    time.sleep(1)
-                    client_sock.send("COLLISION detected!")
-                elif data.decode('UTF-8') == "TEST FALL":
-                    time.sleep(1)
-                    client_sock.send("FALL detected!")
-                else:
-                    reply = "You sent me this: {}".format(data.decode('UTF-8'))
-                    client_sock.send(reply)
-
             client_sock.close()
     except KeyboardInterrupt:
         print("User cancelled operation")
