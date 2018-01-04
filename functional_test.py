@@ -52,7 +52,7 @@ class LedTest(unittest.TestCase):
     '''
     # two pins used for notification, left=26 and right=20
     RIGHT_LED = 20
-    LEFT_LED = 26
+    LEFT_LED = 21
 
     def setUp(self):
         GPIO.setmode(GPIO.BCM)
@@ -67,22 +67,22 @@ class LedTest(unittest.TestCase):
 
     def test_rightLed_on(self):
         self.rightLed.ledOn()
-        self.assertEqual(GPIO.input(20), 1)
+        self.assertEqual(GPIO.input(self.RIGHT_LED), 1)
         time.sleep(1)
 
     def test_leftLed_on(self):
         self.leftLed.ledOn()
-        self.assertEqual(GPIO.input(21), 1)
+        self.assertEqual(GPIO.input(self.LEFT_LED), 1)
         time.sleep(1)
 
     def test_rightLed_off(self):
         self.rightLed.ledOff()
-        self.assertEqual(GPIO.input(20), 0)
+        self.assertEqual(GPIO.input(self.RIGHT_LED), 0)
         time.sleep(1)
 
     def test_leftLed_off(self):
         self.leftLed.ledOff()
-        self.assertEqual(GPIO.input(21), 0)
+        self.assertEqual(GPIO.input(self.LEFT_LED), 0)
         time.sleep(1)
 
 
