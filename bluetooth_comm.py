@@ -40,6 +40,7 @@ if __name__ == "__main__":
     bluetooth = BluetoothComm()
     try:
         while True:
+            print("Waiting for connection...")
             client_sock, client_info = bluetooth.accept_connection()
             print("Accepted connection from {}".format(client_info))
             connected = True
