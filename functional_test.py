@@ -72,7 +72,7 @@ class LedTest(unittest.TestCase):
 
     def test_leftLed_on(self):
         self.leftLed.ledOn()
-        self.assertEqual(GPIO.input(26), 1)
+        self.assertEqual(GPIO.input(21), 1)
         time.sleep(1)
 
     def test_rightLed_off(self):
@@ -82,7 +82,7 @@ class LedTest(unittest.TestCase):
 
     def test_leftLed_off(self):
         self.leftLed.ledOff()
-        self.assertEqual(GPIO.input(26), 0)
+        self.assertEqual(GPIO.input(21), 0)
         time.sleep(1)
 
 
