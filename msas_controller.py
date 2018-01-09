@@ -8,7 +8,7 @@ import lsm303
 ## Threshold for blindspot detection
 DETECT = 50
 RIGHT_LED = 20
-LEFT_LED = 26
+LEFT_LED = 21
 
 left_front = blindspot.USensor(0x71)
 right_front = blindspot.USensor(0x70)
