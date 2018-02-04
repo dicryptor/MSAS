@@ -47,7 +47,7 @@ if __name__ == "__main__":
         print("{:30}".format("-" * 30))
         print("Time is now: {}".format(gps3.gettime()))
         print("Latitude: {:15} Longitude: {:15}".format(*gps3.getlatlon()))
-        print("Speed: {!s:15} Track: {!s:15}".format(*gps3.getmovement()))
+        print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
         print("{:30}".format("-" * 30))
         print("{:30}".format("-" * 30))
         # # line #140-ff of /usr/local/lib/python3.5/dist-packages/gps3/agps.py
