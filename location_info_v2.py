@@ -30,8 +30,8 @@ class GPS3():
         return self.agps_thread.data_stream.track
 
     def getmovement(self):
-        self.speed = self.getspeed()
-        self.track = self.gettrack()
+        self.speed = float(self.getspeed())
+        self.track = float(self.gettrack())
 
         if self.speed > 1:
             return self.speed, self.track
