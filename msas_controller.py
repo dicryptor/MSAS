@@ -5,6 +5,9 @@ import blindspot
 import led_notification
 import lsm303
 import location_info_v2
+import bluetooth_comm
+from threading import Thread
+from queue import Queue
 
 ## Threshold for blindspot detection
 DETECT = 20
@@ -17,6 +20,8 @@ left_back = blindspot.USensor(0x72)
 right_back = blindspot.USensor(0x73)
 lsm303 = lsm303.LSM303(scale=16) #init accelerometer
 gps3 = location_info_v2.GPS3() #int GPS module
+bluetooth = bluetooth_comm.BluetoothComm()
+sms_msg = {"status": None, "type": None, "lat": None, "lon": None, "speed": None, "track": None}
 
 print("Initializing notification LEDs..")
 leftLed = led_notification.LED(LEFT_LED)
@@ -89,4 +94,49 @@ def main_loop():
         led_notification.cleanUp()
 
 
-main_loop()
+def btcomm_loop():
+    try:
+        while True:
+            print("Waiting for connection...")
+            client_sock, client_info = bluetooth.accept_connection()
+            print("Accepted connection from {}".format(client_info))
+            connected = True
+            while connected == True:
+                try:
+                    data = bluetooth.recv_data()
+                    print("Received: {}".format(data))
+                    if data.decode('UTF-8') == "disconnect":
+                        print("Client request to disconnect")
+                        break
+                    elif data.decode('UTF-8') == "TEST COLLISION":
+                        time.sleep(1)
+                        client_sock.send("COLLISION detected!")
+                    elif data.decode('UTF-8') == "TEST FALL":
+                        time.sleep(1)
+                        client_sock.send("FALL detected!")
+                    else:
+                        reply = "You sent me this: {}".format(data.decode('UTF-8'))
+                        client_sock.send(reply)
+                except IOError:
+                    print("IO error detected")
+                    connected = False
+                except AttributeError as e:
+                    print(e)
+                    connected = False
+                except KeyboardInterrupt:
+                    print("User cancelled operation")
+                    connected = False
+            client_sock.close()
+    except KeyboardInterrupt:
+        print("User cancelled operation")
+        bluetooth.server_sock.close()
+
+# main_loop()
+t1 = Thread(target=main_loop)
+t2 = Thread(target=btcomm_loop)
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
