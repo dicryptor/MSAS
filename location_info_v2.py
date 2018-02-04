@@ -44,8 +44,8 @@ if __name__ == '__main__':
         while True:
             # gps_data = gps.get_new_data()
             gps.get_new_data()
-            if self.timestamp != None and self.timestamp != "n/a":
-                print(self.location_info)
-                self.timestamp = self.location_info["time"]
+            if gps.timestamp != None and gps.timestamp != "n/a":
+                print(gps.location_info)
+                gps.timestamp = gps.location_info["time"]
     except KeyboardInterrupt:
         gps.shutdown()
