@@ -26,3 +26,7 @@ class AGPS():
         pass
 
 
+if __name__ == '__main__':
+    gps = AGPS()
+    gps_data = gps.get_new_data()
+    print(gps_data)
