@@ -20,9 +20,11 @@ class AGPS():
         for new_data in self.gpsd_socket:
             if new_data:
                 self.data = self.data_stream.unpack(new_data)
+                print(self.data)
             else:
                 time.sleep(0.3)
                 self.data = None
+                print(self.data)
             return self.data
 
     def get_latlon(self, data):
@@ -35,7 +37,7 @@ if __name__ == '__main__':
 
     try:
         while True:
-            gps_data = gps.get_new_data()
-            print(gps_data)
+            # gps_data = gps.get_new_data()
+            gps.get_new_data()
     except KeyboardInterrupt:
         gps.shutdown()
