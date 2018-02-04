@@ -19,13 +19,13 @@ class AGPS():
         ''' check for new data in data stream '''
         for new_data in self.gpsd_socket:
             if new_data:
-                self.data = self.data_stream.unpack(new_data)
-                print(self.data)
+                self.data_stream.unpack(new_data)
+                print(self.data_stream)
             else:
                 time.sleep(0.3)
-                self.data = None
-                print(self.data)
-            return self.data
+                # self.data = None
+                print(self.data_stream)
+            # return self.data
 
     def get_latlon(self, data):
         ''' Check and get latitude and longitude '''
