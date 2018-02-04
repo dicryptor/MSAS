@@ -20,11 +20,12 @@ class AGPS():
         for new_data in self.gpsd_socket:
             if new_data:
                 self.data_stream.unpack(new_data)
-                print(self.data_stream)
+                print(self.data_stream.lat)
+                print(self.data_stream.lon)
             else:
                 time.sleep(0.3)
                 # self.data = None
-                print(self.data_stream)
+                #print(self.data_stream)
             # return self.data
 
     def get_latlon(self, data):

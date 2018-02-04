@@ -6,7 +6,7 @@ import led_notification
 import lsm303
 
 ## Threshold for blindspot detection
-DETECT = 50
+DETECT = 20
 RIGHT_LED = 20
 LEFT_LED = 21
 
