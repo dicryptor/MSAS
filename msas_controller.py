@@ -106,6 +106,7 @@ def main_loop():
                     time.sleep(0.2)
     except KeyboardInterrupt:
         led_notification.cleanUp()
+        t1.join()
 
 
 def btcomm_loop():
@@ -154,6 +155,7 @@ def btcomm_loop():
     except KeyboardInterrupt:
         print("User cancelled operation")
         bluetooth.server_sock.close()
+        t2.join()
 
 # main_loop()
 t1 = Thread(target=main_loop)
@@ -162,5 +164,5 @@ t2 = Thread(target=btcomm_loop)
 t1.start()
 t2.start()
 
-t1.join()
-t2.join()
+# t1.join()
+# t2.join()
