@@ -32,8 +32,6 @@ class GPS3():
     def getmovement(self):
         self.speed = self.getspeed()
         self.track = self.gettrack()
-        print(self.speed)
-        print(self.track)
 
         if self.speed != "n/a" and self.speed != None and self.track != None:
             if self.speed > .1:
@@ -46,9 +44,12 @@ if __name__ == "__main__":
     gps3 = GPS3()
 
     while True:  # All data is available via instantiated thread data stream attribute.
+        print("{:30}".format("-" * 30))
         print("Time is now: {}".format(gps3.gettime()))
         print("Latitude: {:15} Longitude: {:15}".format(*gps3.getlatlon()))
-        print(gps3.getmovement())
+        print("Speed: {:15} Track: {:15}".format(*gps3.getmovement()))
+        print("{:30}".format("-" * 30))
+        print("{:30}".format("-" * 30))
         # # line #140-ff of /usr/local/lib/python3.5/dist-packages/gps3/agps.py
         # print('---------------------')
         # print(                   agps_thread.data_stream.time)
