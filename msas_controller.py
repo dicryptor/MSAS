@@ -87,7 +87,7 @@ def main_loop():
                 q.put(sms_msg)
                 acc_x, acc_y, acc_z = accel
                 print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(dt.now().isoformat(), acc_x, acc_y, acc_z))
-                print("Are you involved in an accident at {},{}? Do you require assistance?".format(lat, lon))
+                print("Are you involved in an accident at {},{}. Do you require assistance?".format(lat, lon))
                 time.sleep(10)
             else:  # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
                 lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
@@ -118,32 +118,34 @@ def btcomm_loop():
             connected = True
             # msg = {}
             while connected == True:
-                if not q.empty():
-                    msg = q.get()
-                    q.task_done()
-                    if msg["type"] == "Collision detected":
-                        reply = "Collision detected. At {}, {}".format(msg.get("lat", "Unknown"),
-                                                                       msg.get("lon", "location"))
-                        client_sock.send(reply)
-                    elif msg["type"] == "Fall-over detected":
-                        reply = "Fall-over detected. At {}, {}".format(msg.get("lat", "Unknown"),
-                                                                   msg.get("lon", "location"))
-                        client_sock.send(reply)
                 try:
-                    data = bluetooth.recv_data()
-                    print("Received: {}".format(data))
-                    if data.decode('UTF-8') == "disconnect":
-                        print("Client request to disconnect")
-                        break
-                    elif data.decode('UTF-8') == "TEST COLLISION":
-                        time.sleep(1)
-                        client_sock.send("COLLISION detected!")
-                    elif data.decode('UTF-8') == "TEST FALL":
-                        time.sleep(1)
-                        client_sock.send("FALL detected!")
-                    else:
-                        reply = "You sent me this: {}".format(data.decode('UTF-8'))
-                        client_sock.send(reply)
+                    if not q.empty():
+                        msg = q.get()
+                        q.task_done()
+                        if msg["type"] == "Collision detected":
+                            reply = "Collision detected. At {}, {}".format(msg.get("lat", "Unknown"),
+                                                                           msg.get("lon", "location"))
+                            client_sock.send(reply)
+                        elif msg["type"] == "Fall-over detected":
+                            reply = "Fall-over detected. At {}, {}".format(msg.get("lat", "Unknown"),
+                                                                       msg.get("lon", "location"))
+                            client_sock.send(reply)
+
+                # try:
+                #     data = bluetooth.recv_data()
+                #     print("Received: {}".format(data))
+                #     if data.decode('UTF-8') == "disconnect":
+                #         print("Client request to disconnect")
+                #         break
+                #     elif data.decode('UTF-8') == "TEST COLLISION":
+                #         time.sleep(1)
+                #         client_sock.send("COLLISION detected!")
+                #     elif data.decode('UTF-8') == "TEST FALL":
+                #         time.sleep(1)
+                #         client_sock.send("FALL detected!")
+                #     else:
+                #         reply = "You sent me this: {}".format(data.decode('UTF-8'))
+                #         client_sock.send(reply)
                 except IOError:
                     print("IO error detected")
                     connected = False
