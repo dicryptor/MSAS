@@ -11,6 +11,10 @@ class AGPS():
         self.data_stream = agps3.DataStream()
 
 
+    def shutdown(self):
+        self.gpsd_socket.close()
+
+
     def get_new_data(self):
         ''' check for new data in data stream '''
         for new_data in self.gpsd_socket:
@@ -28,5 +32,10 @@ class AGPS():
 
 if __name__ == '__main__':
     gps = AGPS()
-    gps_data = gps.get_new_data()
-    print(gps_data)
+
+    try:
+        while True:
+            gps_data = gps.get_new_data()
+            print(gps_data)
+    except KeyboardInterrupt:
+        gps.shutdown()
