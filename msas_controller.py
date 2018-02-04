@@ -21,7 +21,8 @@ right_back = blindspot.USensor(0x73)
 lsm303 = lsm303.LSM303(scale=16) #init accelerometer
 gps3 = location_info_v2.GPS3() #int GPS module
 bluetooth = bluetooth_comm.BluetoothComm()
-sms_msg = {"status": None, "type": None, "lat": None, "lon": None, "speed": None, "track": None}
+sms_msg = {"type": None, "lat": None, "lon": None, "speed": None, "track": None}
+q = Queue(maxsize=1) # to share message with bluetooth thread
 
 print("Initializing notification LEDs..")
 leftLed = led_notification.LED(LEFT_LED)
@@ -37,8 +38,12 @@ def trigger_back():
     left_back.rrange()
     right_back.rrange()
 
+def msg_builder():
+    pass
+
 
 def main_loop():
+    global sms_msg
     vals = [0, 0, 0, 0]
     vehicle_ok = True
     print("Starting detection cycle")
@@ -65,14 +70,21 @@ def main_loop():
             else:
                 rightLed.ledOff()
 
+
             lat, lon = gps3.getlatlon()
             print("Latitude: {!s:15} Longitude: {!s:15}".format(lat, lon))
+
+            sms_msg["type"] = None
+            sms_msg["lat"] = lat
+            sms_msg["lon"] = lon
 
             accel = lsm303.getRealAccel()
             if not lsm303.past_accel:  # if first time running copy current readings to past readings
                 lsm303.past_accel = accel
             compare_accel = [abs(i - j) for i, j in zip(accel, lsm303.past_accel)]  # compare current and previous readings
             if any(i > 1 for i in compare_accel):  # if any value changes more than 1G, we want to know about it
+                sms_msg["type"] = "Collision detected"
+                q.put(sms_msg)
                 acc_x, acc_y, acc_z = accel
                 print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(dt.now().isoformat(), acc_x, acc_y, acc_z))
                 print("Are you involved in an accident at {},{}? Do you require assistance?".format(lat, lon))
@@ -84,6 +96,8 @@ def main_loop():
                     vehicle_ok = False
 
                 while vehicle_ok == False:
+                    sms_msg["type"] = "Fall-over detected"
+                    q.put(sms_msg)
                     print("{} Bike has fallen over at {},{} Do you need assistance?".format(dt.now().isoformat(), lat, lon))
                     accel = lsm303.getRealAccel()
                     lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
@@ -102,6 +116,9 @@ def btcomm_loop():
             print("Accepted connection from {}".format(client_info))
             connected = True
             while connected == True:
+                if not q.empty():
+                    msg = q.get()
+                    q.task_done()
                 try:
                     data = bluetooth.recv_data()
                     print("Received: {}".format(data))
@@ -114,6 +131,12 @@ def btcomm_loop():
                     elif data.decode('UTF-8') == "TEST FALL":
                         time.sleep(1)
                         client_sock.send("FALL detected!")
+                    elif msg["type"] == "Collision detected":
+                        reply = "Collision detected. At {}, {}".format(msg.get("lat", "Unknown"), msg.get("lon", "location"))
+                        client_sock.send(reply)
+                    elif msg["type"] == "Fall-over detected":
+                        reply = "Fall-over detected. At {}, {}".format(msg.get("lat", "Unknown"), msg.get("lon", "location"))
+                        client_sock.send(reply)
                     else:
                         reply = "You sent me this: {}".format(data.decode('UTF-8'))
                         client_sock.send(reply)
