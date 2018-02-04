@@ -33,8 +33,11 @@ class GPS3():
         self.speed = self.getspeed()
         self.track = self.gettrack()
 
-        if self.speed > 1 and self.speed != "n/a":
-            return float(self.speed), float(self.track)
+        if self.speed != "n/a":
+            if self.speed > 1:
+                return float(self.speed), float(self.track)
+        else:
+            return None, None
 
 
 if __name__ == "__main__":
