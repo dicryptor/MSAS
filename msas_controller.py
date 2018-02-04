@@ -116,11 +116,19 @@ def btcomm_loop():
             client_sock, client_info = bluetooth.accept_connection()
             print("Accepted connection from {}".format(client_info))
             connected = True
-            msg = {}
+            # msg = {}
             while connected == True:
                 if not q.empty():
                     msg = q.get()
                     q.task_done()
+                    if msg["type"] == "Collision detected":
+                        reply = "Collision detected. At {}, {}".format(msg.get("lat", "Unknown"),
+                                                                       msg.get("lon", "location"))
+                        client_sock.send(reply)
+                    elif msg["type"] == "Fall-over detected":
+                        reply = "Fall-over detected. At {}, {}".format(msg.get("lat", "Unknown"),
+                                                                   msg.get("lon", "location"))
+                        client_sock.send(reply)
                 try:
                     data = bluetooth.recv_data()
                     print("Received: {}".format(data))
@@ -133,12 +141,6 @@ def btcomm_loop():
                     elif data.decode('UTF-8') == "TEST FALL":
                         time.sleep(1)
                         client_sock.send("FALL detected!")
-                    elif msg["type"] == "Collision detected":
-                        reply = "Collision detected. At {}, {}".format(msg.get("lat", "Unknown"), msg.get("lon", "location"))
-                        client_sock.send(reply)
-                    elif msg["type"] == "Fall-over detected":
-                        reply = "Fall-over detected. At {}, {}".format(msg.get("lat", "Unknown"), msg.get("lon", "location"))
-                        client_sock.send(reply)
                     else:
                         reply = "You sent me this: {}".format(data.decode('UTF-8'))
                         client_sock.send(reply)
