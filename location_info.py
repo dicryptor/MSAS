@@ -7,6 +7,7 @@ class GPSD():
     def __init__(self):
         gpsd.connect()
         self.all_data = None
+        
 
     def get_data(self):
         self.all_data = gpsd.get_current()
