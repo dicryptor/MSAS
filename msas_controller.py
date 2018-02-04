@@ -33,10 +33,9 @@ def trigger_back():
     right_back.rrange()
 
 
-vals = [0, 0, 0, 0]
-vehicle_ok = True
-
 def main_loop():
+    vals = [0, 0, 0, 0]
+    vehicle_ok = True
     print("Starting detection cycle")
     try:
         while vehicle_ok == True:
