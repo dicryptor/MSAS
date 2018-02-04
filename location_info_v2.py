@@ -32,6 +32,8 @@ class GPS3():
     def getmovement(self):
         self.speed = self.getspeed()
         self.track = self.gettrack()
+        print(self.speed)
+        print(self.track)
 
         if self.speed != "n/a" and self.speed != None and self.track != None:
             if self.speed > .1:
