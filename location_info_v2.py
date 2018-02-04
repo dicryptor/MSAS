@@ -12,16 +12,16 @@ class GPS3():
     ''' gps3 asynchronous communication module '''
 
     def __init__(self):
-        agps_thread = AGPS3mechanism()  # Instantiate AGPS3 Mechanisms
-        agps_thread.stream_data()  # From localhost (), or other hosts, by example, (host='gps.ddns.net')
-        agps_thread.run_thread()  # Throttle time to sleep after an empty lookup, default 0.2 second, default daemon=True
+        self.agps_thread = AGPS3mechanism()  # Instantiate AGPS3 Mechanisms
+        self.agps_thread.stream_data()  # From localhost (), or other hosts, by example, (host='gps.ddns.net')
+        self.agps_thread.run_thread()  # Throttle time to sleep after an empty lookup, default 0.2 second, default daemon=True
 
 
     def getlatlon(self):
-        return agps_thread.data_stream.lat, agps_thread.data_stream.lon
+        return self.agps_thread.data_stream.lat, self.agps_thread.data_stream.lon
 
     def gettime(self):
-        return agps_thread.data_stream.time
+        return self.agps_thread.data_stream.time
 
 
 if __name__ == "__main__":
