@@ -23,12 +23,27 @@ class GPS3():
     def gettime(self):
         return self.agps_thread.data_stream.time
 
+    def getspeed(self):
+        return self.agps_thread.data_stream.speed
+
+    def gettrack(self):
+        return self.agps_thread.data_stream.track
+
+    def getmovement(self):
+        self.speed = self.getspeed()
+        self.track = self.gettrack()
+
+        if self.speed > 1:
+            return self.speed, self.track
+
 
 if __name__ == "__main__":
     gps3 = GPS3()
 
     while True:  # All data is available via instantiated thread data stream attribute.
         print(gps3.getlatlon())
+        print(gps3.gettime())
+        print(gps3.getmovement())
         # # line #140-ff of /usr/local/lib/python3.5/dist-packages/gps3/agps.py
         # print('---------------------')
         # print(                   agps_thread.data_stream.time)
