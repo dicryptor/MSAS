@@ -115,6 +115,7 @@ def btcomm_loop():
             client_sock, client_info = bluetooth.accept_connection()
             print("Accepted connection from {}".format(client_info))
             connected = True
+            msg = {}
             while connected == True:
                 if not q.empty():
                     msg = q.get()
