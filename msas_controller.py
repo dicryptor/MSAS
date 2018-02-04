@@ -4,6 +4,7 @@ from datetime import datetime as dt
 import blindspot
 import led_notification
 import lsm303
+import location_info_v2
 
 ## Threshold for blindspot detection
 DETECT = 20
@@ -14,7 +15,8 @@ left_front = blindspot.USensor(0x71)
 right_front = blindspot.USensor(0x70)
 left_back = blindspot.USensor(0x72)
 right_back = blindspot.USensor(0x73)
-lsm303 = lsm303.LSM303(scale=16)
+lsm303 = lsm303.LSM303(scale=16) #init accelerometer
+gps3 = location_info_v2.GPS3() #int GPS module
 
 print("Initializing notification LEDs..")
 leftLed = led_notification.LED(LEFT_LED)
@@ -57,6 +59,9 @@ try:
             rightLed.ledOn()
         else:
             rightLed.ledOff()
+
+        lat, lon = gps3.getlatlon()
+        print("Latitude: {!s:15} Longitude: {!s:15}".format(lat, lon))
 
         accel = lsm303.getRealAccel()
         if not lsm303.past_accel:  # if first time running copy current readings to past readings

@@ -18,10 +18,15 @@ class GPS3():
 
 
     def getlatlon(self):
-        return self.agps_thread.data_stream.lat, self.agps_thread.data_stream.lon
+        if self.agps_thread.data_stream.lat != "n/a" and self.agps_thread.data_stream.lon != "n/a":
+            return self.agps_thread.data_stream.lat, self.agps_thread.data_stream.lon
+
+        return None, None
 
     def gettime(self):
-        return self.agps_thread.data_stream.time
+        if self.agps_thread.data_stream.time != "n/a":
+            return self.agps_thread.data_stream.time
+        return None
 
     def getspeed(self):
         return self.agps_thread.data_stream.speed
@@ -44,9 +49,8 @@ if __name__ == "__main__":
     gps3 = GPS3()
 
     while True:  # All data is available via instantiated thread data stream attribute.
-        print("{:30}".format("-" * 30))
         print("Time is now: {}".format(gps3.gettime()))
-        print("Latitude: {:15} Longitude: {:15}".format(*gps3.getlatlon()))
+        print("Latitude: {!s:15} Longitude: {!s:15}".format(*gps3.getlatlon()))
         print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
         print("{:30}".format("-" * 30))
         print("{:30}".format("-" * 30))
