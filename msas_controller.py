@@ -70,7 +70,7 @@ try:
         if any(i > 1 for i in compare_accel):  # if any value changes more than 1G, we want to know about it
             acc_x, acc_y, acc_z = accel
             print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(dt.now().isoformat(), acc_x, acc_y, acc_z))
-            print("Are you involved in an accident? Do you require assistance?")
+            print("Are you involved in an accident at {},{}? Do you require assistance?".format(lat, lon))
             time.sleep(10)
         else:  # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
             lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
