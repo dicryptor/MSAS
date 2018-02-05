@@ -89,7 +89,7 @@ def main_loop():
                 acc_x, acc_y, acc_z = accel
                 print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(dt.now().isoformat(), acc_x, acc_y, acc_z))
                 print("Are you involved in an accident at {},{}. Do you require assistance?".format(lat, lon))
-                time.sleep(10)
+                time.sleep(30)
             else:  # if values are not fluctuating more than 1G, get the angle. Maybe bike has fallen over
                 lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
                 print("Tilt angle is {:>3.3f}{}".format(lsm303.angle_filtered, lsm303.deg_sym))
@@ -100,6 +100,7 @@ def main_loop():
                     sms_msg["type"] = "FALL over detected"
                     q.put(sms_msg)
                     print("{} Bike has fallen over at {},{} Do you need assistance?".format(dt.now().isoformat(), lat, lon))
+                    time.sleep(30)
                     accel = lsm303.getRealAccel()
                     lsm303.angle_filtered = lsm303.sma.nextVal(lsm303.get_angle(accel))
                     if -45 <= lsm303.angle_filtered <= 45:
