@@ -147,7 +147,7 @@ def btcomm_loop():
                             client_sock.send("FALL detected!")
                         else:
                             reply = "You sent me this: {}".format(data.decode('UTF-8'))
-                            client_sock.send(reply)
+                            # client_sock.send(reply)
                 except IOError:
                     print("IO error detected")
                     connected = False
