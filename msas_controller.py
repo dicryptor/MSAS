@@ -73,11 +73,14 @@ def main_loop():
 
 
             lat, lon = gps3.getlatlon()
-            print("Latitude: {!s:15} Longitude: {!s:15}".format(lat, lon))
+            speed, track = gps3.getmovement()
+            print("Latitude: {!s:15} Longitude: {!s:15} Speed: {!s:15} Track: {!s:15}".format(lat, lon, speed, track))
 
             sms_msg["type"] = None
             sms_msg["lat"] = lat
             sms_msg["lon"] = lon
+            sms_msg["speed"] = speed
+            sms_msg["track"] = track
 
             accel = lsm303.getRealAccel()
             if not lsm303.past_accel:  # if first time running copy current readings to past readings
@@ -125,13 +128,13 @@ def btcomm_loop():
                     if not q.empty():
                         msg = q.get()
                         q.task_done()
-                        if msg["type"] == "COLLISION detected":
-                            reply = "{}. At {}, {}".format(msg["type"], msg.get("lat", "Unknown"),
-                                                                           msg.get("lon", "location"))
-                            client_sock.send(reply)
-                        elif msg["type"] == "FALL over detected":
-                            reply = "{}. At {}, {}".format(msg["type"], msg.get("lat", "Unknown"),
-                                                                       msg.get("lon", "location"))
+                        if msg["type"] == ("COLLISION detected" or "FALL over detected"):
+                            reply = "{}. At https://maps.google.com/?ll={},{} Speed is {}. Heading is {}.".format(
+                                msg["type"],
+                                msg.get("lat", "Unknown"),
+                                msg.get("lon", "location"),
+                                msg.get("speed", "unknown"),
+                                msg.get("track", "unknown"))
                             client_sock.send(reply)
 
                     if len(data) > 0:
@@ -145,7 +148,7 @@ def btcomm_loop():
                         elif data.decode('UTF-8') == "TEST FALL":
                             time.sleep(1)
                             client_sock.send("FALL detected!")
-                        # else:
+                        # else: # for debugging only
                             # reply = "You sent me this: {}".format(data.decode('UTF-8'))
                             # client_sock.send(reply)
                 except IOError:
