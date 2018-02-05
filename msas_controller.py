@@ -119,6 +119,7 @@ def btcomm_loop():
             # msg = {}
             while connected == True:
                 try:
+                    data = bluetooth.recv_data()
                     if not q.empty():
                         msg = q.get()
                         q.task_done()
@@ -131,21 +132,20 @@ def btcomm_loop():
                                                                        msg.get("lon", "location"))
                             client_sock.send(reply)
 
-                # try:
-                #     data = bluetooth.recv_data()
-                #     print("Received: {}".format(data))
-                #     if data.decode('UTF-8') == "disconnect":
-                #         print("Client request to disconnect")
-                #         break
-                #     elif data.decode('UTF-8') == "TEST COLLISION":
-                #         time.sleep(1)
-                #         client_sock.send("COLLISION detected!")
-                #     elif data.decode('UTF-8') == "TEST FALL":
-                #         time.sleep(1)
-                #         client_sock.send("FALL detected!")
-                #     else:
-                #         reply = "You sent me this: {}".format(data.decode('UTF-8'))
-                #         client_sock.send(reply)
+                    if len(data) > 0:
+                        print("Received: {}".format(data))
+                        if data.decode('UTF-8') == "disconnect":
+                            print("Client request to disconnect")
+                            break
+                        elif data.decode('UTF-8') == "TEST COLLISION":
+                            time.sleep(1)
+                            client_sock.send("COLLISION detected!")
+                        elif data.decode('UTF-8') == "TEST FALL":
+                            time.sleep(1)
+                            client_sock.send("FALL detected!")
+                        else:
+                            reply = "You sent me this: {}".format(data.decode('UTF-8'))
+                            client_sock.send(reply)
                 except IOError:
                     print("IO error detected")
                     connected = False
