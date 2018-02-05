@@ -25,6 +25,7 @@ sms_msg = {"type": None, "lat": None, "lon": None, "speed": None, "track": None}
 q = Queue(maxsize=1) # to share message with bluetooth thread
 
 print("Initializing notification LEDs..")
+led_notification.cleanUp() # all pins are set to default status
 leftLed = led_notification.LED(LEFT_LED)
 rightLed = led_notification.LED(RIGHT_LED)
 
