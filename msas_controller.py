@@ -84,7 +84,7 @@ def main_loop():
                 lsm303.past_accel = accel
             compare_accel = [abs(i - j) for i, j in zip(accel, lsm303.past_accel)]  # compare current and previous readings
             if any(i > 1 for i in compare_accel):  # if any value changes more than 1G, we want to know about it
-                sms_msg["type"] = "Collision detected"
+                sms_msg["type"] = "COLLISION detected"
                 q.put(sms_msg)
                 acc_x, acc_y, acc_z = accel
                 print('{}: X= {:>6.3f}G,  Y= {:>6.3f}G,  Z= {:>6.3f}G'.format(dt.now().isoformat(), acc_x, acc_y, acc_z))
@@ -97,7 +97,7 @@ def main_loop():
                     vehicle_ok = False
 
                 while vehicle_ok == False:
-                    sms_msg["type"] = "Fall-over detected"
+                    sms_msg["type"] = "FALL over detected"
                     q.put(sms_msg)
                     print("{} Bike has fallen over at {},{} Do you need assistance?".format(dt.now().isoformat(), lat, lon))
                     accel = lsm303.getRealAccel()
@@ -124,12 +124,12 @@ def btcomm_loop():
                     if not q.empty():
                         msg = q.get()
                         q.task_done()
-                        if msg["type"] == "Collision detected":
-                            reply = "Collision detected. At {}, {}".format(msg.get("lat", "Unknown"),
+                        if msg["type"] == "COLLISION detected":
+                            reply = "{}. At {}, {}".format(msg["type"], msg.get("lat", "Unknown"),
                                                                            msg.get("lon", "location"))
                             client_sock.send(reply)
-                        elif msg["type"] == "Fall-over detected":
-                            reply = "Fall-over detected. At {}, {}".format(msg.get("lat", "Unknown"),
+                        elif msg["type"] == "FALL over detected":
+                            reply = "{}. At {}, {}".format(msg["type"], msg.get("lat", "Unknown"),
                                                                        msg.get("lon", "location"))
                             client_sock.send(reply)
 
