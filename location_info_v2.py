@@ -46,9 +46,9 @@ class GPS3():
         return None, None
 
     def getdatetime(self, dt):
-        if dt not None:
-            DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ")
-            return DT
+        if dt is not None:
+            self.DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ")
+            return self.DT
         return None
 
 
