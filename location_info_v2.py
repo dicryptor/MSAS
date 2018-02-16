@@ -7,6 +7,7 @@
 """
 from time import sleep
 from gps3.agps3threaded import AGPS3mechanism
+import datetime
 
 class GPS3():
     ''' gps3 asynchronous communication module '''
@@ -44,6 +45,10 @@ class GPS3():
 
         return None, None
 
+    def getdatetime(self, dt):
+        DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ")
+        return DT
+
 
 if __name__ == "__main__":
     gps3 = GPS3()
@@ -54,6 +59,7 @@ if __name__ == "__main__":
         print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
         print("{:30}".format("-" * 30))
         print("{:30}".format("-" * 30))
+        print(gps3.getdatetime(gps3.gettime()))
         # # line #140-ff of /usr/local/lib/python3.5/dist-packages/gps3/agps.py
         # print('---------------------')
         # print(                   agps_thread.data_stream.time)
