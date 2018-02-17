@@ -59,7 +59,9 @@ def main_loop():
             vals[2] = left_back.rread()
             vals[3] = right_back.rread()
 
-            print("{} | {:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(dt.now().isoformat(), *vals))
+            print("{:30}".format("-" * 30))
+            print("System datetime is now: {}".format(dt.now()))
+            print("{:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(*vals))
 
             if vals[0] > DETECT and vals[2] < DETECT:
                 leftLed.ledOn()
@@ -74,6 +76,8 @@ def main_loop():
 
             lat, lon = gps3.getlatlon()
             speed, track = gps3.getmovement()
+            gpstime, timedelta = gps3.getdatetime(gps3.gettime())
+            print("GPS datetime is now: {} Time difference is {!s:>5} seconds".format(gpstime, timedelta))
             print("Latitude: {!s:15} Longitude: {!s:15} Speed: {!s:15} Track: {!s:15}".format(lat, lon, speed, track))
 
             sms_msg["type"] = None
@@ -109,6 +113,7 @@ def main_loop():
                     if -45 <= lsm303.angle_filtered <= 45:
                         vehicle_ok = True
                     time.sleep(0.2)
+            print("{:30}".format("-" * 30))
     except KeyboardInterrupt:
         led_notification.cleanUp()
         t1.join()
