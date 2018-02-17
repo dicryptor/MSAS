@@ -59,7 +59,7 @@ def main_loop():
             vals[2] = left_back.rread()
             vals[3] = right_back.rread()
 
-            print("{:30}".format("-" * 30))
+            print("{:30}".format("-" * 60))
             print("System datetime is now: {}".format(dt.now()))
             print("{:>6.2f} | {:>6.2f} | {:>6.2f} | {:>6.2f} |".format(*vals))
 
@@ -113,7 +113,7 @@ def main_loop():
                     if -45 <= lsm303.angle_filtered <= 45:
                         vehicle_ok = True
                     time.sleep(0.2)
-            print("{:30}".format("-" * 30))
+            print("{:30}".format("-" * 60))
     except KeyboardInterrupt:
         led_notification.cleanUp()
         t1.join()
