@@ -8,6 +8,7 @@
 from time import sleep
 from gps3.agps3threaded import AGPS3mechanism
 import datetime
+import pytz
 
 class GPS3():
     ''' gps3 asynchronous communication module '''
@@ -16,6 +17,7 @@ class GPS3():
         self.agps_thread = AGPS3mechanism()  # Instantiate AGPS3 Mechanisms
         self.agps_thread.stream_data()  # From localhost (), or other hosts, by example, (host='gps.ddns.net')
         self.agps_thread.run_thread()  # Throttle time to sleep after an empty lookup, default 0.2 second, default daemon=True
+        self.mytimezone = pytz.timezone("Asia/Singapore")
 
 
     def getlatlon(self):
@@ -48,6 +50,7 @@ class GPS3():
     def getdatetime(self, dt):
         if dt is not None:
             self.DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ")
+            self.DT = self.mytimezone.localize(self.DT)
             return self.DT
         return None
 
@@ -59,9 +62,9 @@ if __name__ == "__main__":
         print("Time is now: {}".format(gps3.gettime()))
         print("Latitude: {!s:15} Longitude: {!s:15}".format(*gps3.getlatlon()))
         print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
-        print("{:30}".format("-" * 30))
-        print("{:30}".format("-" * 30))
         print(gps3.getdatetime(gps3.gettime()))
+        print("{:30}".format("-" * 30))
+        print("{:30}".format("-" * 30))
         # # line #140-ff of /usr/local/lib/python3.5/dist-packages/gps3/agps.py
         # print('---------------------')
         # print(                   agps_thread.data_stream.time)
