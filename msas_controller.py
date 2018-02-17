@@ -135,15 +135,16 @@ def btcomm_loop():
                         print("Got message from queue...")
                         print(msg)
                         q.task_done()
-                        if msg["type"] == ("COLLISION detected" or "FALL over detected"):
+                        if msg.get("type") == ("COLLISION detected" or "FALL over detected"):
                             reply = "{}. At https://maps.google.com/?ll={},{} Speed is {}. Heading is {}.".format(
                                 msg["type"],
                                 msg.get("lat", "Unknown"),
                                 msg.get("lon", "location"),
                                 msg.get("speed", "unknown"),
                                 msg.get("track", "unknown"))
-                            client_sock.send(reply)
                             print("Message sent: {}".format(reply))
+                            client_sock.send(reply)
+
 
                     if len(data) > 0:
                         print("Received: {}".format(data))
