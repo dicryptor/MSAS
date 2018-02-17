@@ -52,15 +52,16 @@ class GPS3():
             self.DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ") # convert string to dt object
             self.DT = self.DT.replace(tzinfo=pytz.UTC) # add in UTC time zone info
             self.DTZ = self.DT.astimezone(self.mytimezone) #  convert to local timezone
-            return self.DTZ
-        return None
+            self.tdelta = self.timedelta(self.DT)
+            return self.DTZ, self.tdelta
+        return None, None
 
     def timedelta(self, dt):
         FMT = "%Y-%m-%dT%H:%M:%S.%fZ"
         self.dt1 = datetime.datetime.utcnow()
         self.dt2 = dt
         self.tdelta = self.dt1 - self.dt2
-        return self.tdelta.se
+        return self.tdelta
 
 
 
@@ -69,7 +70,7 @@ if __name__ == "__main__":
 
     while True:  # All data is available via instantiated thread data stream attribute.
         print("System date time is now: {}".format(datetime.datetime.now()))
-        print("GPS datetime is now: {}".format(gps3.getdatetime(gps3.gettime())))
+        print("GPS datetime is now: {} {}".format(*gps3.getdatetime(gps3.gettime())))
         print("Latitude: {!s:15} Longitude: {!s:15}".format(*gps3.getlatlon()))
         print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
         print("{:30}".format("-" * 30))
