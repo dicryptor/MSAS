@@ -55,7 +55,7 @@ class GPS3():
             self.DTZ = self.DT.astimezone(self.mytimezone) #  convert to local timezone
             self.tdelta = self.timedelta(self.DT) # get the time difference in seconds
             if self.tdelta not in range(-60, 60): # if time difference more than a minute, set the system time
-                self.setsystemtime(dtz)
+                self.setsystemtime(self.DTZ)
             return self.DTZ, self.tdelta
         return None, None
 
