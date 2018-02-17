@@ -55,15 +55,23 @@ class GPS3():
             return self.DTZ
         return None
 
+    def timedelta(self, dt):
+        FMT = "%Y-%m-%dT%H:%M:%S.%fZ"
+        self.dt1 = datetime.datetime.utcnow()
+        self.dt2 = dt
+        self.tdelta = self.dt1 - self.dt2
+        return self.tdelta.se
+
+
 
 if __name__ == "__main__":
     gps3 = GPS3()
 
     while True:  # All data is available via instantiated thread data stream attribute.
-        print("Time is now: {}".format(gps3.gettime()))
+        print("System date time is now: {}".format(datetime.datetime.now()))
+        print("GPS datetime is now: {}".format(gps3.getdatetime(gps3.gettime())))
         print("Latitude: {!s:15} Longitude: {!s:15}".format(*gps3.getlatlon()))
         print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
-        print(gps3.getdatetime(gps3.gettime()))
         print("{:30}".format("-" * 30))
         print("{:30}".format("-" * 30))
         # # line #140-ff of /usr/local/lib/python3.5/dist-packages/gps3/agps.py
