@@ -59,6 +59,7 @@ class GPS3():
     def timedelta(self, dt):
         FMT = "%Y-%m-%dT%H:%M:%S.%fZ"
         self.dt1 = datetime.datetime.utcnow()
+        self.dt1 = self.dt1.replace(tzinfo=pytz.UTC)
         self.dt2 = dt
         self.tdelta = self.dt1 - self.dt2
         return self.tdelta
