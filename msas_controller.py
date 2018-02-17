@@ -132,6 +132,7 @@ def btcomm_loop():
                     data = bluetooth.recv_data()
                     if not q.empty():
                         msg = q.get()
+                        print("Got message from queue...")
                         q.task_done()
                         if msg["type"] == ("COLLISION detected" or "FALL over detected"):
                             reply = "{}. At https://maps.google.com/?ll={},{} Speed is {}. Heading is {}.".format(
@@ -141,6 +142,7 @@ def btcomm_loop():
                                 msg.get("speed", "unknown"),
                                 msg.get("track", "unknown"))
                             client_sock.send(reply)
+                            print("Message sent: {}".format(reply))
 
                     if len(data) > 0:
                         print("Received: {}".format(data))
