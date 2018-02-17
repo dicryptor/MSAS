@@ -133,6 +133,7 @@ def btcomm_loop():
                     if not q.empty():
                         msg = q.get()
                         print("Got message from queue...")
+                        print(msg)
                         q.task_done()
                         if msg["type"] == ("COLLISION detected" or "FALL over detected"):
                             reply = "{}. At https://maps.google.com/?ll={},{} Speed is {}. Heading is {}.".format(
