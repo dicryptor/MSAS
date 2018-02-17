@@ -68,6 +68,10 @@ class GPS3():
         return self.tdelta.seconds
 
 
+    def setsystemtime(self, dt):
+        self.dtz = dt.strftime("%d %b %Y %H:%M:%S")
+        subprocess.run(['sudo', 'date', '-s', self.dtz])
+
 
 if __name__ == "__main__":
     gps3 = GPS3()
