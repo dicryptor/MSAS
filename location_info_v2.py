@@ -49,9 +49,10 @@ class GPS3():
 
     def getdatetime(self, dt):
         if dt is not None:
-            self.DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ")
-            self.DT = self.mytimezone.localize(self.DT)
-            return self.DT
+            self.DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ") # convert string to dt object
+            self.DT = self.DT.replace(tzinfo=pytz.UTC) # add in UTC time zone info
+            self.DTZ = self.DT.astimezone(self.mytimezone) #  convert to local timezone
+            return self.DTZ
         return None
 
 
