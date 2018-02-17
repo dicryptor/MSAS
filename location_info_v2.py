@@ -9,6 +9,7 @@ from time import sleep
 from gps3.agps3threaded import AGPS3mechanism
 import datetime
 import pytz
+import subprocess
 
 class GPS3():
     ''' gps3 asynchronous communication module '''
@@ -53,6 +54,8 @@ class GPS3():
             self.DT = self.DT.replace(tzinfo=pytz.UTC) # add in UTC time zone info
             self.DTZ = self.DT.astimezone(self.mytimezone) #  convert to local timezone
             self.tdelta = self.timedelta(self.DT) # get the time difference in seconds
+            if -60 < self.tdelta < 60: # if time difference more than a minute, set the system time
+                self.setsystemtime(dtz)
             return self.DTZ, self.tdelta
         return None, None
 
@@ -63,6 +66,10 @@ class GPS3():
         self.dt2 = dt
         self.tdelta = self.dt1 - self.dt2
         return self.tdelta.seconds
+
+    def setsystemtime(self, dt):
+        self.dtz = dt.strftime("%d %b %Y %H:%M:%S")
+        subprocess.run(['sudo', 'date', '-s', self.dtz])
 
 
 
