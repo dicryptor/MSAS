@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     while True:  # All data is available via instantiated thread data stream attribute.
         print("System date time is now: {}".format(datetime.datetime.now()))
-        print("GPS datetime is now: {} Time difference is {!s:>5} seconds".format(*gps3.getdatetime(gps3.gettime())))
+        print("GPS datetime is now: {!s:} Time difference is {!s:>5} seconds".format(*gps3.getdatetime(gps3.gettime())))
         print("Latitude: {!s:15} Longitude: {!s:15}".format(*gps3.getlatlon()))
         print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
         print("{:30}".format("-" * 30))
