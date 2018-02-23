@@ -49,6 +49,8 @@ class GPS3():
         except:
             return None, None
 
+        return None, None
+
     def getdatetime(self, dt):
         if dt is not None:
             self.DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ") # convert string to dt object
