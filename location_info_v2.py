@@ -42,11 +42,12 @@ class GPS3():
         self.speed = self.getspeed()
         self.track = self.gettrack()
 
-        if self.speed != "n/a" and self.speed != None and self.track != None:
+        try:
             if self.speed > .1:
                 return float(self.speed), float(self.track)
+        except:
+            return None, None
 
-        return None, None
 
     def getdatetime(self, dt):
         if dt is not None:
