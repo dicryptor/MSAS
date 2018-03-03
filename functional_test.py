@@ -2,6 +2,7 @@ import unittest
 import blindspot
 import led_notification
 import lsm303
+import location_info_v2 as gps
 import RPi.GPIO as GPIO
 import time
 
@@ -111,6 +112,36 @@ class AccelTest(unittest.TestCase):
 
         self.assertEqual(self.angle_filtered, 48)
 
+
+class GPSTest(unittest.TestCase):
+    def setUp(self):
+        self.gps3 = gps.GPS3()
+        self.lat, self.lon = self.gps3.getlatlon()
+        self.speed, self.track = self.gps3.getmovement()
+
+    def test_lat(self):
+        if self.lat is not None:
+            self.assertTrue(-90 <= self.lat <= 90)
+        else:
+            raise unittest.SkipTest("None value for latitude")
+
+    def test_lon(self):
+        if self.lon is not None:
+            self.assertTrue(-180 <= self.lon <= 180)
+        else:
+            raise unittest.SkipTest("None value for longitude")
+
+    def test_speed(self):
+        if self.speed is not None:
+            self.assertTrue(0 <= self.speed <= 999)
+        else:
+            raise unittest.SkipTest("None value for speed")
+
+    def test_track(self):
+        if self.speed is not None:
+            self.assertTrue(-180 <= self.speed <= 180)
+        else:
+            raise unittest.SkipTest("None value for track")
 
 
 if __name__ == "__main__":
