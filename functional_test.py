@@ -116,8 +116,12 @@ class AccelTest(unittest.TestCase):
 class GPSTest(unittest.TestCase):
     def setUp(self):
         self.gps3 = gps.GPS3()
-        self.lat, self.lon = self.gps3.getlatlon()
-        self.speed, self.track = self.gps3.getmovement()
+        for i in range(10):
+            self.lat, self.lon = self.gps3.getlatlon()
+            self.speed, self.track = self.gps3.getmovement()
+            if self.lat is not None and self.lon is not None:
+                break
+            time.sleep(1)
 
     def test_lat(self):
         if self.lat is not None:
