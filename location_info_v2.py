@@ -7,6 +7,9 @@
 """
 from time import sleep
 from gps3.agps3threaded import AGPS3mechanism
+import datetime
+import pytz
+import subprocess
 
 class GPS3():
     ''' gps3 asynchronous communication module '''
@@ -15,6 +18,7 @@ class GPS3():
         self.agps_thread = AGPS3mechanism()  # Instantiate AGPS3 Mechanisms
         self.agps_thread.stream_data()  # From localhost (), or other hosts, by example, (host='gps.ddns.net')
         self.agps_thread.run_thread()  # Throttle time to sleep after an empty lookup, default 0.2 second, default daemon=True
+        self.mytimezone = pytz.timezone("Asia/Singapore")
 
 
     def getlatlon(self):
@@ -38,18 +42,46 @@ class GPS3():
         self.speed = self.getspeed()
         self.track = self.gettrack()
 
-        if self.speed != "n/a" and self.speed != None and self.track != None:
-            if self.speed > .1:
+        # if self.speed != "n/a" and self.speed != None and self.track != None:
+        try:
+            if self.speed > 1 and self.track is not None: # filter out GPS noise
                 return float(self.speed), float(self.track)
+        except:
+            return None, None
 
         return None, None
+
+    def getdatetime(self, dt):
+        if dt is not None:
+            self.DT = datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ") # convert string to dt object
+            self.DT = self.DT.replace(tzinfo=pytz.UTC) # add in UTC time zone info
+            self.DTZ = self.DT.astimezone(self.mytimezone) #  convert to local timezone
+            self.tdelta = self.timedelta(self.DT) # get the time difference in seconds
+            if self.tdelta not in range(-60, 60): # if time difference more than a minute, set the system time
+                self.setsystemtime(self.DTZ)
+            return self.DTZ, self.tdelta
+        return None, None
+
+    def timedelta(self, dt):
+        FMT = "%Y-%m-%dT%H:%M:%S.%fZ"
+        self.dt1 = datetime.datetime.utcnow()
+        self.dt1 = self.dt1.replace(tzinfo=pytz.UTC)
+        self.dt2 = dt
+        self.tdelta = self.dt1 - self.dt2
+        return self.tdelta.seconds
+
+
+    def setsystemtime(self, dt):
+        self.dtz = dt.strftime("%d %b %Y %H:%M:%S")
+        subprocess.run(['sudo', 'date', '-s', self.dtz])
 
 
 if __name__ == "__main__":
     gps3 = GPS3()
 
     while True:  # All data is available via instantiated thread data stream attribute.
-        print("Time is now: {}".format(gps3.gettime()))
+        print("System date time is now: {}".format(datetime.datetime.now()))
+        print("GPS datetime is now: {!s:} Time difference is {!s:>5} seconds".format(*gps3.getdatetime(gps3.gettime())))
         print("Latitude: {!s:15} Longitude: {!s:15}".format(*gps3.getlatlon()))
         print("Speed   : {!s:15}   Track: {!s:15}".format(*gps3.getmovement()))
         print("{:30}".format("-" * 30))
